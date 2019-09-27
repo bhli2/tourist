@@ -1,69 +1,75 @@
 package com.qbk.juc;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ForkJoinTask;
-import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author ：quboka
- * @description：Fork/Join
+ * @description：Fork/Join  invokeAll方法 批量发送消息
  * @date ：2019/9/24 15:39
- * https://blog.csdn.net/tyrroo/article/details/81390202
  */
 public class ForkJoinTest {
 
-    private static final Integer MAX = 200;
+    /**
+     * RecursiveAction  一个递归无结果的ForkJoinTask（没有返回值）
+     * RecursiveAction -> ForkJoinTask -> Future
+     */
+    class SendMsgTask extends RecursiveAction {
 
-    static class MyForkJoinTask extends RecursiveTask<Integer> {
-        /**
-         * 子任务开始计算的值
-         */
-        private Integer startValue;
+        private final int THRESHOLD = 10;
 
-        /**
-         * 子任务结束计算的值
-         */
-        private Integer endValue;
+        private int start;
+        private int end;
+        private List<String> list;
 
-        MyForkJoinTask(Integer startValue, Integer endValue) {
-            this.startValue = startValue;
-            this.endValue = endValue;
+        public SendMsgTask(int start, int end, List<String> list) {
+            this.start = start;
+            this.end = end;
+            this.list = list;
         }
 
         @Override
-        protected Integer compute() {
+        protected void compute() {
             // 如果条件成立，说明这个任务所需要计算的数值分为足够小了
-            // 可以正式进行累加计算了
-            if(endValue - startValue < MAX) {
-                System.out.println("开始计算的部分：startValue = " + startValue + ";endValue = " + endValue);
-                int totalValue = 0;
-                for(int index = this.startValue ; index <= this.endValue  ; index++) {
-                    totalValue += index;
+            if ((end - start) <= THRESHOLD) {
+                for (int i = start; i < end; i++) {
+                    System.out.println(Thread.currentThread().getName() + ": " + list.get(i));
                 }
-                return totalValue;
+            }else {
+                // 否则再进行任务拆分，拆分成两个任务
+                //去中间值
+                int middle = (start + end) / 2;
+                //派生给定的任务
+                //public static void invokeAll(ForkJoinTask<?> t1, ForkJoinTask<?> t2)
+                ForkJoinTask.invokeAll(new SendMsgTask(start, middle, list), new SendMsgTask(middle, end, list));
             }
-            // 否则再进行任务拆分，拆分成两个任务
-            else {
-                MyForkJoinTask subTask1 = new MyForkJoinTask(startValue, (startValue + endValue) / 2);
-                subTask1.fork();
-                MyForkJoinTask subTask2 = new MyForkJoinTask((startValue + endValue) / 2 + 1 , endValue);
-                subTask2.fork();
-                return subTask1.join() + subTask2.join();
-            }
+
         }
+
     }
 
-    public static void main(String[] args) {
-        // Fork/Join框架的线程池
-        ForkJoinPool pool = new ForkJoinPool();
-        ForkJoinTask<Integer> taskFuture =  pool.submit(new MyForkJoinTask(1,1000));
-        try {
-            Integer result = taskFuture.get();
-            System.out.println("result = " + result);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace(System.out);
+    public static void main(String[] args) throws InterruptedException {
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 233; i++) {
+            list.add("消息"+i);
         }
+
+        System.out.println("Java虚拟机可用的处理器数量:" + Runtime.getRuntime().availableProcessors());
+        //一个运行ForkJoinTask的ExecutorService。 初始化默认线程数为 Java虚拟机可用的处理器数量 4
+        //ForkJoinPool pool = new ForkJoinPool();
+
+        //指定线程数
+        ForkJoinPool pool = new ForkJoinPool(6);
+        //提交一个forkjoint请求执行。
+        pool.submit(new ForkJoinTest().new SendMsgTask(0, list.size(), list));
+        //等待终止
+        pool.awaitTermination(10, TimeUnit.SECONDS);
+        pool.shutdown();
     }
 
 }
