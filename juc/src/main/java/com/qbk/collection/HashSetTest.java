@@ -9,7 +9,6 @@ import java.util.Set;
 public class HashSetTest {
 
     public static void main(String[] args) {
-        //System.arraycopy();
         Set<Object> st = new HashSet<>();
         st.add("1");
         st.add("1");
@@ -20,6 +19,5 @@ public class HashSetTest {
         st.add(new StringBuffer("3"));
         //if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k))))
         System.out.println(st);
-
     }
 }
