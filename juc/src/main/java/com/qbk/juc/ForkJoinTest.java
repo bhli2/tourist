@@ -9,9 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * @author ：quboka
- * @description：Fork/Join  invokeAll方法 批量发送消息
- * @date ：2019/9/24 15:39
+ * Fork/Join  invokeAll方法 批量发送消息
  */
 public class ForkJoinTest {
 

@@ -7,9 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 /**
- * @author ：quboka
- * @description：栅栏
- * @date ：2019/9/24 10:13
+ * 栅栏
  */
 public class CyclicBarrierTest {
     public static void main(String[] args) {

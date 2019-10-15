@@ -4,9 +4,7 @@ import java.util.Random;
 import java.util.concurrent.*;
 
 /**
- * @author ：quboka
- * @description：同步计数器
- * @date ：2019/9/23 17:31
+ * 同步计数器
  */
 public class CountDownLatchTest {
 

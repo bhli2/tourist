@@ -6,9 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author ：quboka
- * @description：ArrayList添加数据
- * @date ：2019/9/24 11:47
+ * ArrayList添加数据
  */
 public class ArrayListAddTest {
     public static void main(String[] args) {

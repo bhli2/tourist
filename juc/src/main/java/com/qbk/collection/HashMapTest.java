@@ -1,9 +1,8 @@
 package com.qbk.collection;
 
 /**
- * @author ：quboka
- * @date ：2019/9/23 17:14
- * TODO
+ * HashMap
+ *  TODO
  */
 public class HashMapTest {
 

@@ -5,9 +5,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author ：quboka
- * @description：信号量
- * @date ：2019/9/23 17:12
+ * 信号量
  */
 public class SemaphoreTest {
 
