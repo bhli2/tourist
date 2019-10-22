@@ -9,6 +9,9 @@ import org.springframework.core.env.Environment;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * maven 和 spring 多环境结合
+ */
 @Slf4j
 @SpringBootApplication
 public class MavenApplication {
