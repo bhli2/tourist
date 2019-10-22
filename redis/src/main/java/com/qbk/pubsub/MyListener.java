@@ -1,4 +1,4 @@
-package com.qbk.redis.pubsub;
+package com.qbk.pubsub;
 
 import redis.clients.jedis.JedisPubSub;
 
