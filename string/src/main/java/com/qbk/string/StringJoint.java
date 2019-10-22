@@ -1,11 +1,8 @@
 package com.qbk.string;
 
-import org.springframework.web.bind.annotation.ControllerAdvice;
-
 /**
  * str拼接
  */
-@ControllerAdvice
 public class StringJoint {
     public static void main(String[] args) {
         String s1 = "a";
