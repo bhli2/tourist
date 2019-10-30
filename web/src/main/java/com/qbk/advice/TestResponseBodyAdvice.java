@@ -7,6 +7,9 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +24,9 @@ public class TestResponseBodyAdvice implements ResponseBodyAdvice<Map> {
     @Override
     public boolean supports(MethodParameter returnType, Class converterType) {
         System.out.println("ResponseBodyAdvice"+1);
-        return true;
+        //返回值类型是否带泛型
+        Type type = returnType.getGenericParameterType();
+        return type instanceof ParameterizedType;
     }
 
     /**
