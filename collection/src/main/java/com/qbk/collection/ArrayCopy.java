@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 /**
  * 数组复制
+ * * 把两个数组合并成一个新的数组
  */
 public class ArrayCopy {
 
