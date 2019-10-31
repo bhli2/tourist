@@ -23,6 +23,7 @@ public class TestContrller {
     public TestContrller(TestService testService){
         this.testService = testService;
     }
+    //public TestContrller(){ }
 
     /**
      * 测试构造器注入
