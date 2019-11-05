@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 
+/**
+ * aspectj
+ */
 @Slf4j
 @Aspect
 @Component
@@ -27,12 +30,18 @@ public class HelloAspect {
         this.mapper = mapper;
     }
 
+    /**
+     * 配置切入点
+     */
     @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping) " +
             "|| @annotation(org.springframework.web.bind.annotation.GetMapping)")
     public void webLog() {
 
     }
 
+    /**
+     * 前置通知
+     */
     @Before("webLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         for (Object object : joinPoint.getArgs()) {
@@ -47,6 +56,9 @@ public class HelloAspect {
         }
     }
 
+    /**
+     * 后置通知
+     */
     @AfterReturning(returning = "response", pointcut = "webLog()")
     public void doAfterReturning(Object response) throws Throwable {
         if (response != null) {
@@ -54,6 +66,9 @@ public class HelloAspect {
         }
     }
 
+    /**
+     * 前置通知 并直接配置切入点
+     */
     @Before(value = "execution(String com.qbk.aop.HelloController.index())")
     public void before(JoinPoint joinPoint){
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
