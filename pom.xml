@@ -26,12 +26,17 @@
 		<module>web</module>
 		<module>test</module>
 		<module>test4</module>
+		<module>spring-routing-data-source</module>
 	</modules>
 
 	<properties>
 		<skipTests>true</skipTests>
 		<java.version>1.8</java.version>
 		<spring.boot.version>2.1.8.RELEASE</spring.boot.version>
+		<mybatis.version>1.3.2</mybatis.version>
+		<pagehelper.version>1.2.5</pagehelper.version>
+		<druid.version>1.1.9</druid.version>
+		<mysql.version>8.0.17</mysql.version>
 	</properties>
 
 	<dependencyManagement>
@@ -91,7 +96,36 @@
 				<version>21.0</version>
 			</dependency>
 
+			<!--mybatis-->
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency>
+
+			<!-- 分页插件-->
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>${pagehelper.version}</version>
+			</dependency>
+
+			<!-- alibaba的druid数据库连接池 -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid-spring-boot-starter</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+
+			<!--mysql-->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 		</dependencies>
+
 	</dependencyManagement>
 
 	<build>
