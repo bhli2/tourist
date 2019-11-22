@@ -7,6 +7,7 @@ import com.qbk.source.domain.TabUser;
 import com.qbk.source.service.TabUserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +32,12 @@ public class TestController {
             @RequestParam(value = "dataSourceName")String dataSourceName){
         //切换数据源
         DBContextHolder.setDataSource(dataSourceName);
-        return tabUserService.selectList();
+        try {
+            return tabUserService.selectList();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     /**

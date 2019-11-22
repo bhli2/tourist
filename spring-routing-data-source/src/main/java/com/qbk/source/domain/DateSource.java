@@ -25,8 +25,8 @@ public class DateSource implements Serializable {
     private String username;
     private String password;
     /**
-     * 连接等待超时时间
+     * 连接等待超时时间 毫秒
      */
     @Builder.Default
-    private int maxWait = 60000;
+    private int maxWait = 3000;
 }

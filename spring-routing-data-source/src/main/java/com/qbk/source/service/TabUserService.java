@@ -37,6 +37,7 @@ public class TabUserService{
     }
 
     public List<TabUser> selectList() {
+        tabUserMapper.selectByPrimaryKey(1);
         return tabUserMapper.selectList();
     }
 }

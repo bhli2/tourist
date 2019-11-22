@@ -33,6 +33,14 @@ public class DataSourceConfig {
         return dataSource;
     }
 
+    @Bean()
+    @ConfigurationProperties(prefix = "spring.datasource.druid.thirdly")
+    public DataSource dataSourceThirdly(){
+        DruidDataSource dataSource = DruidDataSourceBuilder.create().build();
+        dataSource.setName("thirdly");
+        return dataSource;
+    }
+
     /**
      * 自定义数数据路由（也是数据源）
      */
@@ -43,6 +51,7 @@ public class DataSourceConfig {
         Map<Object,Object> targetDataSource = new HashMap<>();
         targetDataSource.put("first",dataSourceFirst());
         targetDataSource.put("second",dataSourceSecond());
+        targetDataSource.put("thirdly",dataSourceThirdly());
         //创建数据路由对象
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
         //设置数据源集合
