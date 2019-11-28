@@ -1,0 +1,10 @@
+info:
+  user:
+    name: kk
+    age: 29
+    login_name: qbk #宽松的绑定属性规则,下划线、中划线、大写都可以识别
+    role:
+      roleNames: #复杂属性 list
+        - admin
+        - user
+        - programmer
