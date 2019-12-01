@@ -50,6 +50,7 @@ public class ConfigProperties {
             //已注入
             System.out.println(user);
             System.out.println(user.getRole().getRoleNames());
+            user.getRole().getRoleMap().forEach((k,v) -> System.out.println(k+":"+v));
         };
     }
 }
