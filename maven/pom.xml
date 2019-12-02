@@ -47,6 +47,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <!--指定打包名-->
+        <finalName>maven-test</finalName>
     </build>
 
     <!--多配置环境-->
