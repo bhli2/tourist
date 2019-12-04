@@ -2,10 +2,7 @@ package com.qbk.collection;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -212,6 +209,7 @@ public class ListRetain {
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode(of = {"id"})
 class User{
     private Integer id;
 }
