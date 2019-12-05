@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class MockTest {
      * 无须启动项目 可直接调用接口
      */
     @Test
-    public void TestXXX() throws Exception {
+    public void TestGet() throws Exception {
         /**
          * .perform() 执行一个MockMvcRequestBuilders请求。其中.get()表示发送get请求（可以使用get、post、put、delete等）；
          * .contentType()设置编码格式；.param()请求参数,可以带多个。
@@ -71,7 +73,34 @@ public class MockTest {
         System.out.println(result.getResponse().getStatus());
     }
 
+    /**
+     * post
+     */
+    @Test
+    public void TestPost() throws Exception {
+        String result = mockMvc.perform(
+                MockMvcRequestBuilders.post("/post")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8) //json
+                        .content("{\"name\":\"qbk\"}") //参数
+        )
+                .andExpect(MockMvcResultMatchers.status().isOk()) //断言状态码
+                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value("201"))//断言josn 结果 code 值是201
+                .andDo(MockMvcResultHandlers.print())//打印
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 
+    /**
+     * 上传
+     */
+    @Test
+    public void whenUploadSuccess() throws Exception {
+        String result = mockMvc.perform(MockMvcRequestBuilders.fileUpload("/file")
+                .file(new MockMultipartFile("file", "test.txt", "multipart/form-data", "hello upload".getBytes(StandardCharsets.UTF_8))))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
 
 
 }
