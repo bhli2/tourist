@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -46,14 +47,19 @@ public class MockTest {
          *   andExpect()添加 MockMvcResultMatchers验证规则，验证执行结果是否正确。
          *   .andDo()添加 MockMvcResultHandlers结果处理器,这是可以用于打印结果输出。
          *   .andReturn()结果还回，然后可以进行下一步的处理。
+         *
+         *   MockMvcResultMatchers.status().isOk()  断言状态码
+         *   MockMvcResultMatchers.jsonPath  断言结果 表达式JSON路径表达式 参考：https://github.com/json-path/JsonPath
          */
         MvcResult result = mockMvc.perform(
                 MockMvcRequestBuilders.get("/get")
+                        .contentType(MediaType.APPLICATION_JSON_UTF8)
                         .param("id", "15")
                         .param("name","kk")
                         .header("Authorization", "Bearer c3af4cf0-58c5-4953-aba5-e40e8c901a51")
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()").value(3))//断言数组长度为3
                 .andDo(MockMvcResultHandlers.print())
                 .andReturn();
         System.out.println(result);
