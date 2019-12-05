@@ -15,7 +15,7 @@ import io.restassured.specification.RequestSpecification;
 
 /**
  * @author ：quboka
- * @description：
+ * @description：测试wiremock中的数据 （需要提前把数据加入进wiremock中）
  * @date ：2019/12/5 18:52
  */
 @RunWith(SpringRunner.class)
