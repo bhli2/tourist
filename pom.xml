@@ -29,6 +29,7 @@
 		<module>spring-routing-data-source</module>
 		<module>tk-mybatis</module>
 		<module>configuration-properties</module>
+		<module>wiremock</module>
 	</modules>
 
 	<properties>
@@ -138,6 +139,20 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-redis</artifactId>
 				<version>${spring.boot.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.github.tomakehurst/wiremock -->
+			<dependency>
+				<groupId>com.github.tomakehurst</groupId>
+				<artifactId>wiremock</artifactId>
+				<version>2.25.1</version>
+			</dependency>
+
+			<!--RestAssured 框架-->
+			<dependency>
+				<groupId>io.rest-assured</groupId>
+				<artifactId>spring-web-test-client</artifactId>
+				<version>4.1.2</version>
 			</dependency>
 
 		</dependencies>
