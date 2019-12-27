@@ -30,6 +30,7 @@
 		<module>tk-mybatis</module>
 		<module>configuration-properties</module>
 		<module>wiremock</module>
+		<module>dozermapper</module>
 	</modules>
 
 	<properties>
