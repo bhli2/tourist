@@ -46,9 +46,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.qbk.configuration.ConfigProperties</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>

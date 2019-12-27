@@ -11,4 +11,12 @@ info:
       role_map: #复杂属性 map
         - name: kaka
         - age: 18
-
+    authentication:
+      - name: quboka
+        password : 123456
+      - name: sssss
+        password : 2222
+      - name: qqqq
+        password: 3333
+server:
+  port: 8019
