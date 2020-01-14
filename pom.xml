@@ -31,6 +31,7 @@
 		<module>configuration-properties</module>
 		<module>wiremock</module>
 		<module>dozermapper</module>
+		<module>docker-plugin</module>
 	</modules>
 
 	<properties>
