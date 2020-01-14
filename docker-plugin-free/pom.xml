@@ -11,10 +11,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>docker-plugin</artifactId>
+    <artifactId>docker-plugin-free</artifactId>
     <version>1.0.0</version>
-    <name>docker-plugin</name>
-    <description>docker插件 + dockerfile</description>
+    <name>docker-plugin-free</name>
+    <description>docker插件免dockerfile</description>
 
     <properties>
         <java.version>1.8</java.version>
@@ -40,7 +40,6 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
                 <!--绑定Docker 命令到 Maven 各个阶段-->
                 <!--解释：我们可以把 Docker 分为 build、tag、push，然后分别绑定 Maven 的 package、deploy 阶段-->
                 <executions>
@@ -57,18 +56,26 @@
                 <configuration>
                     <!--要生成的镜像名和版本-->
                     <imageName>${project.name}:${project.version}</imageName>
-                    <!--指定Dockerfile路径-->
-                    <dockerDirectory>${project.basedir}/src/main/resources/docker</dockerDirectory>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                    <!--基础镜像,相当于 Dockerfile 中的 from-->
+                    <baseImage>java:8</baseImage>
+                    <!--docker 仓库地址:比如阿里云和私有的我这里没有写-->
+                    <!--<registryUrl>https://39.106.33.10:2375</registryUrl>-->
                     <!--docker 安装的宿机地址，并且要在docker配置中开放远程端口2375-->
                     <dockerHost>https://39.106.33.10:2375</dockerHost>
-                    <!--如果docker开户远程了tls认证，侧需要把相关的客户的key(ca.pem cert.pem key.pem三个文件)给放到本地，然后指定路径-->
                     <dockerCertPath>F:\docker\cert</dockerCertPath>
+                    <cmd>["java", "-version"]</cmd>
+                    <entryPoint>["java", "-jar", "/${project.artifactId}-${project.version}.jar"]</entryPoint>
+                    <!-- <buildArgs>
+                         <JAR_FILE>target/${project.artifactId}-${project.version}.jar</JAR_FILE>
+                     </buildArgs>-->
                     <resources>
-                        <!-- 这里是复制 jar 包到 docker 容器指定目录配置，也可以写到 Docokerfile 中 -->
                         <resource>
                             <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
+                            <include>${project.artifactId}-${project.version}.jar</include>
                         </resource>
                     </resources>
                 </configuration>

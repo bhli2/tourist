@@ -32,6 +32,7 @@
 		<module>wiremock</module>
 		<module>dozermapper</module>
 		<module>docker-plugin</module>
+		<module>docker-plugin-free</module>
 	</modules>
 
 	<properties>
