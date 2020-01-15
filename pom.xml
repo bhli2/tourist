@@ -33,6 +33,7 @@
 		<module>dozermapper</module>
 		<module>docker-plugin</module>
 		<module>docker-plugin-free</module>
+		<module>dockerfile-plugin</module>
 	</modules>
 
 	<properties>
