@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * https://github.com/spotify/dockerfile-maven/blob/master/docs/authentication.md
+ *
+ * 启动容器：
+ * docker run -p 8088:8088 -d 39.106.33.10:5000/dockerfile-plugin:1.0.0
  */
 @RestController
 @SpringBootApplication
