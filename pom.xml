@@ -34,6 +34,7 @@
 		<module>docker-plugin</module>
 		<module>docker-plugin-free</module>
 		<module>dockerfile-plugin</module>
+		<module>orika</module>
 	</modules>
 
 	<properties>
@@ -157,6 +158,13 @@
 				<groupId>io.rest-assured</groupId>
 				<artifactId>spring-web-test-client</artifactId>
 				<version>4.1.2</version>
+			</dependency>
+
+			<!--fastjson-->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.60</version>
 			</dependency>
 
 		</dependencies>
