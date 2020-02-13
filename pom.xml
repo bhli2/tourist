@@ -35,6 +35,7 @@
 		<module>docker-plugin-free</module>
 		<module>dockerfile-plugin</module>
 		<module>orika</module>
+		<module>fastdfs</module>
 	</modules>
 
 	<properties>
