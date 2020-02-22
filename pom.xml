@@ -31,11 +31,13 @@
 		<module>configuration-properties</module>
 		<module>wiremock</module>
 		<module>dozermapper</module>
-		<module>docker-plugin</module>
+		<!--注释调 防止打包的时候  提交docker images-->
+		<!--<module>docker-plugin</module>
 		<module>docker-plugin-free</module>
-		<module>dockerfile-plugin</module>
+		<module>dockerfile-plugin</module>-->
 		<module>orika</module>
 		<module>fastdfs</module>
+		<module>starter</module>
 	</modules>
 
 	<properties>
@@ -171,14 +173,5 @@
 		</dependencies>
 
 	</dependencyManagement>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>
