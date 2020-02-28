@@ -29,9 +29,9 @@ public class DemoFastdfsApplicationTests {
 
     @Test
     public void testUpload() throws FileNotFoundException {
-        File file = new File("C:/Users/86186/Desktop/图片/ycy3.jpg");
-        // 上传并且生成缩略图
-        StorePath storePath = this.storageClient.uploadFile(new FileInputStream(file), file.length(), "jpg", null);
+        File file = new File("C:/Users/86186/Desktop/test.docx");
+        // 上传
+        StorePath storePath = this.storageClient.uploadFile(new FileInputStream(file), file.length(), "docx", null);
         // 带分组的路径
         System.out.println(storePath.getFullPath());
         // 不带分组的路径
