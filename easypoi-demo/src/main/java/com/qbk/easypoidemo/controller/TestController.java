@@ -2,11 +2,10 @@ package com.qbk.easypoidemo.controller;
 
 import cn.afterturn.easypoi.word.WordExportUtil;
 import com.qbk.easypoidemo.utils.EasyWordUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,14 +33,15 @@ public class TestController {
     /**
      * 测试 linux 下 通过 读取模板 直接生成流下载
      */
-    @GetMapping("/test")
-    public String test(String name ,String title ,HttpServletResponse response){
-        Map<String, Object> map = new HashMap<>();
-        map.put("title",name);
-        map.put("name",title);
+    @PostMapping("/test")
+    public String test( @RequestBody Map<String,Object> map ,HttpServletResponse response){
+
         try {
-            XWPFDocument doc = WordExportUtil.exportWord07(
-                    "/opt/test/word/test.docx", map);
+            String url = (String) map.get("url");
+            if(StringUtils.isBlank(url)){
+                url = "/opt/test/word/001.docx" ;
+            }
+            XWPFDocument doc = WordExportUtil.exportWord07(url, map);
             // 设置强制下载不打开
             response.setContentType("application/force-download");
             // 设置文件名
