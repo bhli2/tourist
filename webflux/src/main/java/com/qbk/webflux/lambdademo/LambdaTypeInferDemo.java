@@ -1,4 +1,4 @@
-package com.qbk.webflux.demo;
+package com.qbk.webflux.lambdademo;
 
 /**
  * lambad 的 类型推断

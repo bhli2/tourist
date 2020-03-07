@@ -1,4 +1,4 @@
-package com.qbk.webflux.demo;
+package com.qbk.webflux.lambdademo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

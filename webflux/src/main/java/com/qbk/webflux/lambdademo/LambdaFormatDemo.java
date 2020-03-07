@@ -1,4 +1,4 @@
-package com.qbk.webflux.demo;
+package com.qbk.webflux.lambdademo;
 
 /**
  * lambda 格式
@@ -41,7 +41,7 @@ public class LambdaFormatDemo {
         MyInterface my4 = (int i ) -> {
             return i * 5 ;
         } ;
-        //com.qbk.webflux.demo.LambdaFormatDemo$$Lambda$1/97730845@17ed40e0
+        //com.qbk.webflux.lambdademo.LambdaFormatDemo$$Lambda$1/97730845@17ed40e0
         System.out.println(my1);
         System.out.println(my1.fun(2));
         System.out.println(my2.fun(2));
