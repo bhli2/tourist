@@ -14,17 +14,16 @@ import java.util.Map;
 public class Test {
     public static void main(String[] args)  {
         try {
-            RestTemplate restTemplate = new RestTemplate();
-
             long start = System.currentTimeMillis();
             ConcurrentExecutor.execute(() -> {
                 Map<String,Object> params = new HashMap<>();
                 params.put("name",Thread.currentThread().getName());
-                ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8098/volatile/get2" +
+                RestTemplate restTemplate = new RestTemplate();
+                ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8098/volatile/get" +
                         "?name={name}",String.class,params);
                 String body = responseEntity.getBody();
                 System.out.println(Thread.currentThread().getName() + ":" + body);
-            }, 7,7);
+            }, 10,10);
             long end = System.currentTimeMillis();
             System.out.println("总耗时：" + (end - start) + " ms.");
         }catch (Exception e){

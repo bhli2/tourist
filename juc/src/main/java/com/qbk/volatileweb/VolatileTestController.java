@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -18,6 +19,8 @@ public class VolatileTestController {
 
     private static volatile boolean isTrue = true ;
 
+    private static volatile AtomicBoolean isAtimicTrue = new AtomicBoolean(true) ;
+
     /**
      * 高并发下有线程安全问题，因为下面两部操作无法保证原子性
      * 1 if(isTrue){
@@ -27,7 +30,7 @@ public class VolatileTestController {
     public String get(String name) throws InterruptedException {
         if(isTrue){
             isTrue = false;
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(2);
             isTrue = true;
         }else {
             return "稍后再试";
@@ -35,15 +38,14 @@ public class VolatileTestController {
         return "成功";
     }
 
-    private static AtomicInteger aint = new AtomicInteger();
     /**
      * 使用cas锁 确保原子性
      */
     @GetMapping("/get2")
     public String get2(String name) throws InterruptedException {
-        if(aint.compareAndSet(0,1)){
-            TimeUnit.SECONDS.sleep(5);
-            aint.getAndDecrement();
+        if(isAtimicTrue.compareAndSet(true,false)){
+            TimeUnit.SECONDS.sleep(2);
+            isAtimicTrue.set(true);
         }else {
             return "稍后再试";
         }
