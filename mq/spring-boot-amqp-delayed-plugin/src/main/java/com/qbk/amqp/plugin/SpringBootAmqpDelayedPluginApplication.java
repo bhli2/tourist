@@ -1,14 +1,14 @@
-package com.qbk.amqp.delayed;
+package com.qbk.amqp.plugin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * ttl + 死信队列
+ * 延时队列插件
  */
 @SpringBootApplication
-public class SpringBootAmqpDelayedApplication {
+public class SpringBootAmqpDelayedPluginApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringBootAmqpDelayedApplication.class,args);
+        SpringApplication.run(SpringBootAmqpDelayedPluginApplication.class,args);
     }
 }

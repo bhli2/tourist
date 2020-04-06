@@ -11,10 +11,10 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>spring-boot-amqp-delayed</artifactId>
+	<artifactId>spring-boot-amqp-delayed-plugin</artifactId>
 	<version>1.0.0</version>
-	<name>spring-boot-amqp-delayed</name>
-	<description>ttl+死信队列</description>
+	<name>spring-boot-amqp-delayed-plugin</name>
+	<description>延时队列插件</description>
 
 	<dependencies>
 		<dependency>
