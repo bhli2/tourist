@@ -47,7 +47,7 @@ public class RabbitConfig {
 	     * @param autoDelete 默认 false 。是否自动删除。如果为 true，至少有一个消费者连接到 这个队列，之后所有与这个队列连接的消费者都断开时，队列会自动删除。
 	     * @param arguments 队列的其他属性
          */
-        Queue queue = new Queue("FIRST_QUEUE", true, false, true, args);
+        Queue queue = new Queue("FIRST_QUEUE", true, false, false, args);
         //Queue queue = new Queue("FIRST_QUEUE");
         return queue;
     }
