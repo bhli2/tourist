@@ -26,8 +26,8 @@ public class CasController {
      * 1 if(isTrue){
      * 2    isTrue = false;
      */
-    @GetMapping("/get")
-    public String get(String name) throws InterruptedException {
+    @GetMapping("/unsafety")
+    public String unsafety(String name) throws InterruptedException {
         if(isTrue){
             isTrue = false;
             TimeUnit.SECONDS.sleep(2);
@@ -41,15 +41,22 @@ public class CasController {
     /**
      * 使用cas锁 确保原子性
      */
-    @GetMapping("/get2")
-    public String get2(String name) throws InterruptedException {
+    @GetMapping("/get")
+    public String get() {
+        //参考lock锁写法，把加锁写在try外面，解锁写在finally中
         if(isAtimicTrue.compareAndSet(true,false)){
-            TimeUnit.SECONDS.sleep(2);
-            isAtimicTrue.set(true);
+            try {
+                TimeUnit.SECONDS.sleep(2);
+                //int i = 10/0;
+                return "成功";
+            }catch (Exception e){
+                return "失败";
+            }finally {
+                isAtimicTrue.set(true);
+            }
         }else {
             return "稍后再试";
         }
-        return "成功";
     }
 
 }
