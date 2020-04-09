@@ -1,7 +1,5 @@
-package com.qbk.volatileweb;
+package com.qbk.lockweb;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,7 +17,7 @@ public class Test {
                 Map<String,Object> params = new HashMap<>();
                 params.put("name",Thread.currentThread().getName());
                 RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8098/volatile/get" +
+                ResponseEntity<String> responseEntity = restTemplate.getForEntity("http://localhost:8098/lock/get2" +
                         "?name={name}",String.class,params);
                 String body = responseEntity.getBody();
                 System.out.println(Thread.currentThread().getName() + ":" + body);

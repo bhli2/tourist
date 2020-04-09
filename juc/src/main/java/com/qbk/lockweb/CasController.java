@@ -1,4 +1,4 @@
-package com.qbk.volatileweb;
+package com.qbk.lockweb;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,13 +9,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Volatile测试
+ * Cas \ Volatile测试
  *
  *  需求是 当一个用户请求接口时候  其他用户必须等他请求完才能执行逻辑，要不只能立刻返回稍后再试
  */
-@RequestMapping("/volatile")
+@RequestMapping("/cas")
 @RestController
-public class VolatileTestController {
+public class CasController {
 
     private static volatile boolean isTrue = true ;
 

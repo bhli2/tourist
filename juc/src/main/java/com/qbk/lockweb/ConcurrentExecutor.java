@@ -1,4 +1,4 @@
-package com.qbk.volatileweb;
+package com.qbk.lockweb;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
