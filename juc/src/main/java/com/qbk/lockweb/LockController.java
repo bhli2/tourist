@@ -9,6 +9,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
+ * lock 限流测试
  * trylock 尝试获取锁
  * https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/locks/Lock.html
  */

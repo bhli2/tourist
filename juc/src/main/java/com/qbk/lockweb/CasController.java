@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Cas \ Volatile测试
+ * Cas \ Volatile 限流测试
  *
  *  需求是 当一个用户请求接口时候  其他用户必须等他请求完才能执行逻辑，要不只能立刻返回稍后再试
  */
