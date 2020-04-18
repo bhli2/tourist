@@ -19,7 +19,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(
 //        scanBasePackageClasses = {A.class,B.class,A2.class ,B2.class}
 //        scanBasePackageClasses = {A3.class ,B3.class}
-        scanBasePackageClasses = {A1.class ,B1.class,C1.class,MyApplicationContextAware.class}
+//        scanBasePackageClasses = {A1.class ,B1.class,C1.class,MyApplicationContextAware.class}
 )
 public class BeanApplication {
 
