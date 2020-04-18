@@ -34,15 +34,22 @@ public class MyApplicationContextAware implements ApplicationContextAware {
 
     @PostConstruct
     public void init(){
-        System.out.println(myService);
 
-        MyService myService = (MyService) context.getBean("myServiceImpl");
+        //结合aop查看 代理对象类型
+        System.out.println(myService.getClass().getSimpleName());
+
         /*
         getBean 实际调用的是 DefaultSingletonBeanRegistry 中的三个缓存
         private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
         private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
         private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
          */
+        //查看 无aop、aop-cjlb、aop-jdk 三种不同模式下的 对象类型，其中，aop-jdk 抛出转换异常
+        MyServiceImpl myService = (MyServiceImpl) context.getBean("myServiceImpl");
+
+        //结合aop查看 代理对象类型
+        System.out.println(myService.getClass().getSimpleName());
+
         myService.fun();
     }
 }
