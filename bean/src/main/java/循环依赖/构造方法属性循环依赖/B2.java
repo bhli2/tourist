@@ -1,6 +1,8 @@
 package 循环依赖.构造方法属性循环依赖;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
  * b属性 + a构造
  * 两种结果不同
  */
-@AllArgsConstructor
+//@AllArgsConstructor
 @RestController
 public class B2 {
 
-//    @Autowired
+    //@Lazy
+    @Autowired
     private A2 a2;
 
     @GetMapping("/b/2")

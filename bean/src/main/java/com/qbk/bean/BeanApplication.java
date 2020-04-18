@@ -17,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 测试3种情况的springbean 循环依赖
  */
 @SpringBootApplication(
-//        scanBasePackageClasses = {A.class,B.class,A2.class ,B2.class,MyApplicationContextAware.class}
+//        scanBasePackageClasses = {A.class,B.class,A2.class ,B2.class}
 //        scanBasePackageClasses = {A3.class ,B3.class}
         scanBasePackageClasses = {A1.class ,B1.class,C1.class,MyApplicationContextAware.class}
 )

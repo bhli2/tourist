@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 构造方法循环依赖
+ * spring无法解决的循环依赖
  */
 @AllArgsConstructor
 @RestController

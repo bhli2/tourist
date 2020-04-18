@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 属性循环依赖。
+ * spring使用三级缓存可以自动解决
  */
 @RestController
 public class A {
