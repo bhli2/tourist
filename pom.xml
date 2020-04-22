@@ -41,6 +41,9 @@
 		<module>design-pattern</module>
 		<module>easypoi-demo</module>
 		<module>mq</module>
+		<module>tool</module>
+		<module>bean</module>
+		<module>picture</module>
 	</modules>
 
 	<properties>
