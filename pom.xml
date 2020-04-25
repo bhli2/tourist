@@ -44,6 +44,7 @@
 		<module>tool</module>
 		<module>bean</module>
 		<module>picture</module>
+		<module>sql</module>
 	</modules>
 
 	<properties>
