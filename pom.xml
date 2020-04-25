@@ -45,6 +45,7 @@
 		<module>bean</module>
 		<module>picture</module>
 		<module>sql</module>
+		<module>timer</module>
 	</modules>
 
 	<properties>
