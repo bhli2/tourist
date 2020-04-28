@@ -11,15 +11,16 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
+	<packaging>pom</packaging>
+
 	<artifactId>sql</artifactId>
 	<version>1.0.0</version>
 	<name>sql</name>
 	<description>sql</description>
-	<packaging>sql</packaging>
 
 	<modules>
 		<module>transaction</module>
-		<module>mybatis-plush</module>
+		<module>mybatis-plus</module>
 	</modules>
 
 </project>

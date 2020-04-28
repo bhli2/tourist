@@ -5,7 +5,7 @@
 
 	<parent>
 		<groupId>com.qbk</groupId>
-		<artifactId>tourist</artifactId>
+		<artifactId>sql</artifactId>
 		<version>1.0.0</version>
 		<!-- lookup parent from repository -->
 		<relativePath>../pom.xml</relativePath>
@@ -17,7 +17,6 @@
 	<description>mybatis-plus</description>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -48,9 +47,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.qbk.sql.mybatisplus.SqlMybatisplusAppliction</mainClass>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>
