@@ -3,6 +3,9 @@ package com.qbk.timer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * spring动态定时器，也可扩展持久化
+ */
 @SpringBootApplication
 public class TimerApplication {
     public static void main(String[] args) {
