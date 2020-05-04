@@ -7,12 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-import 循环依赖.三个循环依赖.C1;
 
 import javax.annotation.PostConstruct;
 
 /**
- * 获取ApplicationContext容器
+ * 测试2种aop和无aop情况下getBean获取对象情况
  */
 @Component
 public class MyApplicationContextAware implements ApplicationContextAware {
