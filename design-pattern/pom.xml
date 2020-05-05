@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>factory-pattern</module>
+		<module>chain-pattern</module>
 	</modules>
 
 </project>
