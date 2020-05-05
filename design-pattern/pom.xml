@@ -22,6 +22,7 @@
 		<module>chain-pattern</module>
 		<module>flyweight-pattern</module>
 		<module>builder-pattern</module>
+		<module>composite-pattern</module>
 	</modules>
 
 </project>
