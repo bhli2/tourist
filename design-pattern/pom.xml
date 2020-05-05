@@ -23,6 +23,7 @@
 		<module>flyweight-pattern</module>
 		<module>builder-pattern</module>
 		<module>composite-pattern</module>
+		<module>proxy-pattern</module>
 	</modules>
 
 </project>
