@@ -1,6 +1,7 @@
 package com.qbk.mq.amqp.demo.provider;
 
 import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class MyProvider {
 
     @Autowired
-    private AmqpTemplate amqpTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     public void send(){
 
@@ -19,16 +20,16 @@ public class MyProvider {
          */
         // Default 默认交换机,默认交换机其实就是直连交换机,可以理解为名称为空字符串的直连交换机,
         // 一个queue若不指定binding的交换机,就被绑定到默认交换机上,routingKey为queue的名称
-        amqpTemplate.convertAndSend("","FIRST_QUEUE","-------- a direct msg");
+        rabbitTemplate.convertAndSend("","FIRST_QUEUE","-------- a direct msg");
 
         //主题交换机  routingKey可以用通配符规则路由
-        amqpTemplate.convertAndSend("TOPIC_EXCHANGE","shanghai.qbk.travel","-------- a topic msg : shanghai.qbk.消息");
-        amqpTemplate.convertAndSend("TOPIC_EXCHANGE","beijing.qbk.work","-------- a topic msg : beijing.qbk.消息");
+        rabbitTemplate.convertAndSend("TOPIC_EXCHANGE","shanghai.qbk.travel","-------- a topic msg : shanghai.qbk.消息");
+        rabbitTemplate.convertAndSend("TOPIC_EXCHANGE","beijing.qbk.work","-------- a topic msg : beijing.qbk.消息");
 
         //广播交换机  没有routingKey
-        amqpTemplate.convertAndSend("FANOUT_EXCHANGE","","-------- a fanout msg");
+        rabbitTemplate.convertAndSend("FANOUT_EXCHANGE","","-------- a fanout msg");
 
         //直连交换机 精准匹配routingKey
-        amqpTemplate.convertAndSend("myDirectExchange","mine.direct","this is a direct message");
+        rabbitTemplate.convertAndSend("myDirectExchange","mine.direct","this is a direct message");
     }
 }
