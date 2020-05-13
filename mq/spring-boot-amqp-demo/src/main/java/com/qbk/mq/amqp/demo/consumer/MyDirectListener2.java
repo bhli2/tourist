@@ -10,17 +10,16 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * 另一种写法 ，无需在config里面配置
- * 直接使用RabbitListener注解声明队列、交换机、绑定
+ * 绑定相同的交换机 ，不同的队列
  */
 @Component
 @RabbitListener(
         bindings = @QueueBinding(
-                value = @Queue("myDirectQueue"),
+                value = @Queue("myDirectQueue2"),
                 exchange = @Exchange(value = "myDirectExchange", type = ExchangeTypes.DIRECT),
                 key = "mine.direct"
         ))
-public class MyDirectListener {
+public class MyDirectListener2 {
     /**
      * listenerAdapter
      *
@@ -28,7 +27,7 @@ public class MyDirectListener {
      */
     @RabbitHandler
     public void onMessage(@Payload String msg , Channel channel, Message message) throws IOException {
-        System.out.println("直连交换机的 队列1：" + msg);
+        System.out.println("直连交换机的 队列2：" + msg);
 
         /* 确认收到，手动 ack
          * @param  deliveryTag 接收标记

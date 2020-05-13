@@ -2,11 +2,13 @@ package com.qbk.mq.amqp.demo.config;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageListener;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,10 +33,20 @@ public class TemplateConfig {
     /**
      * RabbitAdmin 是 AmqpAdmin 的实现，封装了对 RabbitMQ 的基础管理操作，比 如对交换机、队列、绑定的声明和删除等
      */
-//    @Bean
-//    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
-//        return new RabbitAdmin(connectionFactory);
-//    }
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    /**
+     * MessageListenerContainer可以理解为MessageListener的容器，
+     * 一个Container 只有一个 Listener，但是可以生成多个线程使用相同的 MessageListener 同时消费消息
+     */
+    @Bean
+    public SimpleMessageListenerContainer messageContainer(ConnectionFactory connectionFactory) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        return container;
+    }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
