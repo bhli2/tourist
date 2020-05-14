@@ -43,7 +43,9 @@ public class FirstConsumer {
                      /* 拒绝一个或多个接收到的消息,手动 nack
                      * @param  deliveryTag 接收标记
                      * @param  multiple 是否批量
-                     * @param  requeue 是否重新放回队列。 如果否 ：将会进入死信队列 或者 丢弃
+                     * @param  requeue 是否重新放回队列。
+                     *          如果否 ：将会进入死信队列 或者 丢弃 .
+                     *          如果是 ：会返回队列，别其他消费者消费，如果只有者一个消费者，会死循环。多次以后会停止
                      */
                     channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
                 } catch (IOException e) {
