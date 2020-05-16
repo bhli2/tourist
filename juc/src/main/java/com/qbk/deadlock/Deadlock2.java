@@ -28,7 +28,7 @@ public class Deadlock2 {
                     }
                 }
             }
-        }).start();
+        },"deadlock1").start();
 
         new Thread(new Runnable() {
 
@@ -44,7 +44,7 @@ public class Deadlock2 {
                     }
                 }
             }
-        }).start();
+        },"deadlock2").start();
     }
 }
 
