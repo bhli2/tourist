@@ -12,8 +12,8 @@ public class Deadlock2 {
     class B {
 
     }
-    public static void main(String[] args) {
-        new Thread(new Runnable() {
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread1 = new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -28,9 +28,9 @@ public class Deadlock2 {
                     }
                 }
             }
-        },"deadlock1").start();
+        },"deadlock1");
 
-        new Thread(new Runnable() {
+        Thread thread2 =  new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -44,7 +44,13 @@ public class Deadlock2 {
                     }
                 }
             }
-        },"deadlock2").start();
+        },"deadlock2");
+        thread1.start();
+        thread2.start();
+
+        Thread.sleep(3000);
+        thread2.interrupt(); // 中断线程2
+        System.out.println("synchronized 是无法被中断的");
     }
 }
 
