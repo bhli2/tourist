@@ -3,7 +3,7 @@ package com.qbk.deadlock;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 死锁
+ * 活锁?
  * 通过 Jconsole  观察
  * 通过 Jstack  观察
  */
