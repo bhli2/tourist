@@ -5,6 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 锁可中断
  * lockInterruptibly()
+ * 可以中断等待锁的线程
  *
  * lock.isHeldByCurrentThread() lock锁是否被当前线程所持有
  */
