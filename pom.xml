@@ -47,6 +47,7 @@
 		<module>sql</module>
 		<module>timer</module>
 		<module>aliyun-sdk</module>
+		<module>data</module>
 	</modules>
 
 	<properties>
