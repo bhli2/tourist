@@ -21,6 +21,7 @@
 	<modules>
 		<module>transaction</module>
 		<module>mybatis-plus</module>
+		<module>mybatis-demo</module>
 	</modules>
 
 </project>
