@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 测试事务隔离级别
  */
-@MapperScan("com.qbk.sql.transaction.mapper")
 @SpringBootApplication
 public class SqlTransactionAppliction {
     public static void main(String[] args) {

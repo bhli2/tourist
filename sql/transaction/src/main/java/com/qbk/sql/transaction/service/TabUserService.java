@@ -1,5 +1,7 @@
 package com.qbk.sql.transaction.service;
 
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
@@ -13,6 +15,28 @@ public class TabUserService{
 
     @Resource
     private TabUserMapper tabUserMapper;
+
+    /**
+     * 测试幻读
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public TabUser testTransaction(TabUser user) {
+        TabUser user1 = tabUserMapper.selectByPrimaryKey(user.getUserId());
+        System.out.println(user1);
+        final int insert = tabUserMapper.insert(user);
+        System.out.println("插入结果：" + insert);
+        user1 = tabUserMapper.selectByPrimaryKey(user.getUserId());
+        System.out.println(user1);
+        //int i = 10 /0 ;
+        return user1;
+    }
+
+    /**
+     * 插件测试
+     */
+    public TabUser get(int i) {
+        return tabUserMapper.selectByPrimaryKey(i);
+    }
 
     public int deleteByPrimaryKey(Integer userId){
         return tabUserMapper.deleteByPrimaryKey(userId);
@@ -36,20 +60,5 @@ public class TabUserService{
 
     public int updateByPrimaryKey(TabUser record){
         return tabUserMapper.updateByPrimaryKey(record);
-    }
-
-    /**
-     * 测试幻读
-     */
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public TabUser testTransaction(TabUser user) {
-        TabUser user1 = tabUserMapper.selectByPrimaryKey(user.getUserId());
-        System.out.println(user1);
-        final int insert = tabUserMapper.insert(user);
-        System.out.println("插入结果：" + insert);
-        user1 = tabUserMapper.selectByPrimaryKey(user.getUserId());
-        System.out.println(user1);
-        //int i = 10 /0 ;
-        return user1;
     }
 }
