@@ -49,6 +49,7 @@
 		<module>aliyun-sdk</module>
 		<module>data</module>
 		<module>jvmtest</module>
+		<module>monitor</module>
 	</modules>
 
 	<properties>
