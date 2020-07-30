@@ -51,6 +51,7 @@
 		<module>data</module>
 		<module>jvmtest</module>
 		<module>monitor</module>
+		<module>javademo</module>
 	</modules>
 
 	<properties>
