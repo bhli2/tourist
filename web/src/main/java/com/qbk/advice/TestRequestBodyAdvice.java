@@ -2,20 +2,24 @@ package com.qbk.advice;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJacksonInputMessage;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * RequestBodyAdvice 是对请求响应的json串进行处理，一般使用环境是处理解密的json串。
@@ -44,21 +48,52 @@ public class TestRequestBodyAdvice implements RequestBodyAdvice {
      */
     @Override
     public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
-        System.out.println("RequestBodyAdvice"+2);
-        //获取请求体
-        InputStream inputStream = httpInputMessage.getBody();
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        byte[] bytes = new byte[2048];
-        //标记
-        bufferedInputStream.mark(0);
-        //读取
-        bufferedInputStream.read(bytes);
-        System.out.println(new String(bytes));
-        //重置
-        bufferedInputStream.reset();
-        //存储使用的Jackson视图
-        return new MappingJacksonInputMessage(bufferedInputStream, httpInputMessage.getHeaders());
+        return new HttpInputMessage() {
+            @Override
+            public InputStream getBody() throws IOException {
+
+                HttpServletRequest request = ((ServletRequestAttributes) Objects
+                        .requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+
+                BufferedReader br = new BufferedReader(
+                        new InputStreamReader(httpInputMessage.getBody(), "utf-8")
+                );
+
+                StringBuilder buffer = new StringBuilder();
+                String temp;
+                while ((temp = br.readLine()) != null) {
+                    buffer.append(temp);
+                }
+                br.close();
+                String bodyData = buffer.toString();
+                System.out.println("参数:" + bodyData);
+                return new ByteArrayInputStream(bodyData.getBytes());
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return httpInputMessage.getHeaders();
+            }
+        };
     }
+
+    //    @Override
+//    public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> converterType) throws IOException {
+//        System.out.println("RequestBodyAdvice"+2);
+//        //获取请求体
+//        InputStream inputStream = httpInputMessage.getBody();
+//        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+//        byte[] bytes = new byte[2048];
+//        //标记
+//        bufferedInputStream.mark(0);
+//        //读取
+//        bufferedInputStream.read(bytes);
+//        System.out.println(new String(bytes));
+//        //重置
+//        bufferedInputStream.reset();
+//        //存储使用的Jackson视图
+//        return new MappingJacksonInputMessage(bufferedInputStream, httpInputMessage.getHeaders());
+//    }
 
     /**
      * 在请求体转换为对象后调用
