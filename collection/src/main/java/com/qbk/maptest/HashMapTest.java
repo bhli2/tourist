@@ -1,4 +1,4 @@
-package com.qbk.collection;
+package com.qbk.maptest;
 
 /**
  * HashMap
