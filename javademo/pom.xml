@@ -4,11 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>com.qbk</groupId>
-		<artifactId>tourist</artifactId>
-		<version>1.0.0</version>
-		<!-- lookup parent from repository -->
-		<relativePath>../pom.xml</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.8.RELEASE</version>
+		<relativePath/>
 	</parent>
 
 	<artifactId>javademo</artifactId>
