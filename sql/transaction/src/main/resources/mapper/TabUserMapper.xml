@@ -82,4 +82,9 @@
     set user_name = #{userName,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+  <select id="getUserName" resultMap="BaseResultMap">
+    SELECT * FROM tab_user WHERE user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+
 </mapper>

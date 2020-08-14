@@ -1,6 +1,7 @@
 package com.qbk.sql.transaction.mapper;
 
 import com.qbk.sql.transaction.domain.TabUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
 * Created by Mybatis Generator 2020/04/25
@@ -17,4 +18,6 @@ public interface TabUserMapper {
     int updateByPrimaryKeySelective(TabUser record);
 
     int updateByPrimaryKey(TabUser record);
+
+    TabUser getUserName(@Param("userName") String userName);
 }
