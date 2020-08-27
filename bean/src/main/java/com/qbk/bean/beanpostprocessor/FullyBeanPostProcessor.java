@@ -2,10 +2,7 @@ package com.qbk.bean.beanpostprocessor;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
-import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
-import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.*;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.stereotype.Component;
@@ -18,10 +15,19 @@ import java.lang.reflect.Constructor;
 @Component
 public class FullyBeanPostProcessor implements
         BeanPostProcessor,
+        BeanFactoryPostProcessor,
         InstantiationAwareBeanPostProcessor,
         SmartInstantiationAwareBeanPostProcessor,
         MergedBeanDefinitionPostProcessor,
         DestructionAwareBeanPostProcessor {
+
+    /**
+     * BeanFactoryPostProcessor
+     */
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException{
+        System.out.println("0-->BeanFactoryPostProcessor");
+    }
 
     @Override
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName)
