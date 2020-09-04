@@ -1,5 +1,6 @@
 package com.qbk.webflux.lambdademo;
 
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 /**
@@ -18,5 +19,20 @@ public class LambdaCascadeDemo {
         //外层函数 执行返回 是内存函数  然后接着 内层函数 执行 返回 int
         Integer result = function.apply(3).apply(2);
         System.out.println(result);
+
+        //add(2)(3)(4)=9
+        Function<Integer, Function<Integer, Function<Integer, Integer>>> function2 = x -> y -> z -> x + y +z;
+        Integer result2 = function2.apply(2).apply(3).apply(4);
+        System.out.println(result2);
+
+        // add(2,3)(4)=9
+        BiFunction<Integer,Integer, Function<Integer, Integer>> function3 = (x , y)-> z -> x + y +z;
+        Integer result3 = function3.apply(2,3).apply(4);
+        System.out.println(result3);
+
+        //add(2)(3,4)=9 
+        Function<Integer, BiFunction<Integer,Integer,Integer>> function4 = x -> (y , z) -> x + y +z;
+        Integer result4 = function4.apply(2).apply(3,4);
+        System.out.println(result4);
     }
 }
