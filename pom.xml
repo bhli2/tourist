@@ -52,6 +52,7 @@
 		<module>jvmtest</module>
 		<module>monitor</module>
 <!--		<module>javademo</module>-->
+		<module>nosql</module>
 	</modules>
 
 	<properties>
