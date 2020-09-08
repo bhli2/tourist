@@ -1,6 +1,10 @@
 package com.qbk.nosql.elasticsearchdemo.config;
 
 import org.apache.http.HttpHost;
+import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
+import org.apache.http.client.config.RequestConfig.Builder;
+import org.elasticsearch.client.RestClientBuilder.RequestConfigCallback;
+import org.elasticsearch.client.RestClientBuilder.HttpClientConfigCallback;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -27,9 +31,33 @@ public class ElasticSearchConfig {
      * 连接的端口是 9200
      */
     @Bean(name = "restHighLevelClient")
-    public RestHighLevelClient client() {
-        HttpHost httpHost= new HttpHost("172.31.54.234",9200);
-        RestClientBuilder builder = RestClient.builder(httpHost);
+    public RestHighLevelClient restHighLevelClient() {
+
+        HttpHost httpHost = new HttpHost("172.31.54.234", 9200);
+
+        RestClientBuilder builder = RestClient.builder(new HttpHost[]{httpHost});
+
+        // 异步httpclient连接延时配置
+        builder.setRequestConfigCallback(new RequestConfigCallback() {
+            @Override
+            public Builder customizeRequestConfig(Builder requestConfigBuilder) {
+                requestConfigBuilder.setConnectTimeout(1000);// 连接超时时间
+                requestConfigBuilder.setSocketTimeout(30000);// 连接超时时间
+                requestConfigBuilder.setConnectionRequestTimeout(500);// 获取连接的超时时间
+                return requestConfigBuilder;
+            }
+        });
+
+        // 异步httpclient连接数配置
+        builder.setHttpClientConfigCallback(new HttpClientConfigCallback() {
+            @Override
+            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+                httpClientBuilder.setMaxConnTotal(100);// 最大连接数
+                httpClientBuilder.setMaxConnPerRoute(100);// 最大路由连接数
+                return httpClientBuilder;
+            }
+        });
         return new RestHighLevelClient(builder);
     }
 }
+
