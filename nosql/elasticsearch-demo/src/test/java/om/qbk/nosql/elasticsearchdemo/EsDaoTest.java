@@ -42,7 +42,7 @@ public class EsDaoTest {
         System.out.println(result);
     }
 
-    //通过SpringData ES技术向ElasticSearch数据库存储一条数据
+    //插入
     @Test
     public void testSave(){
         //创建文档

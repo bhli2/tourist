@@ -22,7 +22,15 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Document(indexName = "qbk2",type = "article")
+/**
+ * shards 分片 即使是一个节点中的数据也会通过hash算法，分成多个片存放，默认是5片
+ * replicas 副本
+ * index	相当于rdbms的database, 对于用户来说是一个逻辑数据库，虽然物理上会被分多个shard存放，也可能存放在多个node中。
+ * type	    类似于rdbms的table，但是与其说像table，其实更像面向对象中的class , 同一Json的格式的数据集合。
+ * document	类似于rdbms的 row、面向对象里的object
+ * field	相当于字段、属性
+ */
+@Document(indexName = "qbk2",type = "article",shards = 5,replicas = 1)
 public class Article {
 
     @Id

@@ -1,11 +1,22 @@
 package om.qbk.nosql.elasticsearchdemo;
 
+import com.alibaba.fastjson.JSONObject;
 import com.qbk.nosql.elasticsearchdemo.ElasticSearchDemoApplication;
 import com.qbk.nosql.elasticsearchdemo.entity.Item;
 import org.apache.commons.beanutils.BeanUtils;
+import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
+import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
+import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
+import org.elasticsearch.action.admin.indices.get.GetIndexRequest;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -19,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +44,140 @@ public class RestHighLevelClientTest {
     private RestHighLevelClient restHighLevelClient;
 
     /**
+     * 创建索引
+     */
+    @Test
+    public void createIndex( ) {
+        try{
+            //创建索引请求
+            CreateIndexRequest request = new CreateIndexRequest("qbk3");
+
+            //设置分片和副本数
+            request.settings(Settings.builder()
+                    .put("index.number_of_shards", 5)
+                    .put("index.number_of_replicas", 1)
+            );
+
+            //设置 mapping
+            //如果不需要指定字段属性可以忽略以下mapping设置，新增文档后会自动创建mapping
+            Map <String,Object> id = new HashMap <>();
+            id.put("type","text");
+            id.put("store",true);
+
+            Map <String,Object> title = new HashMap <>();
+            title.put("type","text");
+            title.put("store",true);
+            title.put("index",true);
+            title.put("analyzer", "ik_max_word");
+
+            Map <String,Object> properties = new HashMap <>();
+            properties.put("id",id);
+            properties.put("title",title);
+
+            Map <String,Object> mapping = new HashMap <>();
+            mapping.put("properties",properties);
+
+            //  type
+            request.mapping("quboka", mapping);
+
+            CreateIndexResponse createIndexResponse = restHighLevelClient.indices().create(request);
+
+            System.out.println(JSONObject.toJSONString(createIndexResponse));
+            System.out.println("索引创建成功");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 查看索引是否存在
+     */
+    @Test
+    public void existsIndex( ) throws IOException {
+        GetIndexRequest request = new GetIndexRequest();
+        request.indices("qbk3");
+        boolean exists = restHighLevelClient.indices().exists(request);
+        System.out.println("是否存在:" + exists);
+    }
+
+    /**
+     * 删除索引
+     */
+    @Test
+    public void delIndex( ) throws IOException {
+        DeleteIndexRequest request = new DeleteIndexRequest();
+        request.indices("qbk3");
+        restHighLevelClient.indices().delete(request);
+
+    }
+
+    /**
+     * 添加
+     */
+    @Test
+    public void add() throws IOException {
+
+        //document  字段可以变
+        Map<String,Object> map = new HashMap<>();
+        map.put("id","2");
+        map.put("title","这是一部不是");
+
+        //设置 index type  id
+        IndexRequest request = new IndexRequest("qbk3");
+        request.type("quboka");
+        request.id( "2" );
+
+        //添加数据  id存在为修改
+        request.source( JSONObject.toJSONString(map) , XContentType.JSON);
+
+        IndexResponse response = restHighLevelClient.index(request );
+
+        System.out.println(JSONObject.toJSONString(response));
+    }
+
+    /**
+     * 批量添加
+     */
+    @Test
+    public void addAll() throws IOException {
+        //批量请求
+        BulkRequest bulkRequest = new BulkRequest();
+
+        IndexRequest request;
+
+        for (int i = 0; i < 10; i++) {
+
+            request = new IndexRequest("post");
+
+            Map<String,Object> map = new HashMap<>();
+            map.put("id", "" + i );
+            map.put("title","这是一部不是" + i);
+
+            if( i %2 == 0){
+                map.put("name","只有双数才配有名称" + i);
+            }
+
+            request.index("qbk3")
+                    .id( "" + i)
+                    .type("quboka")
+                    .source(
+                            JSONObject.toJSONString(map),
+                            XContentType.JSON
+                    );
+
+            bulkRequest.add(request);
+        }
+
+        BulkResponse response = restHighLevelClient.bulk(bulkRequest);
+
+        System.out.println(JSONObject.toJSONString(response));
+    }
+
+    /**
      *  查询
      */
     @Test
-    public void createIndex() throws IOException, InvocationTargetException, IllegalAccessException {
+    public void query() throws IOException, InvocationTargetException, IllegalAccessException {
         //"qbk "是es中的索引
         //SearchRequest是包装查询请求
         SearchRequest searchRequest = new SearchRequest("qbk");
