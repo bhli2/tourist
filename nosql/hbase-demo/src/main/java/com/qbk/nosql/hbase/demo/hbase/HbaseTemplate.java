@@ -1,78 +1,29 @@
 package com.qbk.nosql.hbase.demo.hbase;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StopWatch;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 
 /**
  * Central class for accessing the HBase API. Simplifies the use of HBase and helps to avoid common errors.
  * It executes core HBase workflow, leaving application code to invoke actions and extract results.
  *
  */
+@Component
 public class HbaseTemplate implements HbaseOperations {
-    
-    private static final Logger LOGGER = LoggerFactory.getLogger(HbaseTemplate.class);
-    
-    private Configuration configuration;
-    
+
+    @Autowired
     private volatile Connection connection;
-    
-    public HbaseTemplate(Configuration configuration) {
-        this.setConfiguration(configuration);
-        Assert.notNull(configuration, " a valid configuration is required");
-    }
 
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
-    }
-
-    public Configuration getConfiguration() {
-        return configuration;
-    }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
-    public Connection getConnection() {
-        if (null == this.connection) {
-            synchronized (this) {
-                if (null == this.connection) {
-                    try {
-                        ThreadPoolExecutor poolExecutor =
-                                new ThreadPoolExecutor(
-                                        200,
-                                        Integer.MAX_VALUE,
-                                        60L,
-                                        TimeUnit.SECONDS,
-                                        new SynchronousQueue<>()
-                                );
-                        // init pool
-                        poolExecutor.prestartCoreThread();
-                        this.connection = ConnectionFactory.createConnection(configuration, poolExecutor);
-                    } catch (IOException e) {
-                        LOGGER.error("hbase connection资源池创建失败");
-                    }
-                }
-            }
-        }
-        return this.connection;
-    }
-    
     @Override
     public <T> T execute(String tableName, TableCallback<T> action) {
         Assert.notNull(action, "Callback object must not be null");
@@ -82,7 +33,7 @@ public class HbaseTemplate implements HbaseOperations {
         sw.start();
         Table table = null;
         try {
-            table = this.getConnection().getTable(TableName.valueOf(tableName));
+            table = this.connection.getTable(TableName.valueOf(tableName));
             return action.doInTable(table);
         } catch (Throwable throwable) {
             throw new HbaseSystemException(throwable);
@@ -92,7 +43,7 @@ public class HbaseTemplate implements HbaseOperations {
                     table.close();
                     sw.stop();
                 } catch (IOException e) {
-                    LOGGER.error("hbase资源释放失败");
+                   e.printStackTrace();
                 }
             }
         }
@@ -179,7 +130,7 @@ public class HbaseTemplate implements HbaseOperations {
         BufferedMutator mutator = null;
         try {
             BufferedMutatorParams mutatorParams = new BufferedMutatorParams(TableName.valueOf(tableName));
-            mutator = this.getConnection().getBufferedMutator(mutatorParams.writeBufferSize(3 * 1024 * 1024));
+            mutator = this.connection.getBufferedMutator(mutatorParams.writeBufferSize(3 * 1024 * 1024));
             action.doInMutator(mutator);
         } catch (Throwable throwable) {
             sw.stop();
@@ -191,7 +142,7 @@ public class HbaseTemplate implements HbaseOperations {
                     mutator.close();
                     sw.stop();
                 } catch (IOException e) {
-                    LOGGER.error("hbase mutator资源释放失败");
+                    e.printStackTrace();
                 }
             }
         }

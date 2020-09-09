@@ -1,4 +1,4 @@
-package com.qbk.nosql.hbase.demo.dao;
+package com.qbk.nosql.hbase.demo.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

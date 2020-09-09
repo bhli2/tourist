@@ -1,6 +1,6 @@
 package com.qbk.nosql.hbase.demo.utils;
 
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.TableName;
@@ -8,14 +8,12 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * HBase工具
@@ -188,11 +186,13 @@ public class HBaseUtil {
             table = con.getTable(TableName.valueOf(tableName));
             datas.forEach(
                     (rowKey,data)->{
-                        Put put = new Put(Bytes.toBytes(rowKey));
-                        data.forEach(
-                                (k,v) -> put.addColumn(Bytes.toBytes(family), Bytes.toBytes(k), Bytes.toBytes(v))
-                        );
-                        puts.add(put);
+                        if(!CollectionUtils.isEmpty(data)){
+                            Put put = new Put(Bytes.toBytes(rowKey));
+                            data.forEach(
+                                    (k,v) -> put.addColumn(Bytes.toBytes(family), Bytes.toBytes(k), Bytes.toBytes(v))
+                            );
+                            puts.add(put);
+                        }
                     }
             );
             table.put(puts);
@@ -406,7 +406,8 @@ public class HBaseUtil {
      * @param tableName 表名
      * @param rowKeys  主键
      */
-    public static void getListValue(String tableName, List<String> rowKeys) {
+    public static Map<String,Map<String,String>> getListValue(String tableName, List<String> rowKeys) {
+        Map<String,Map<String,String>> rs = Maps.newLinkedHashMap();
         Table table = null ;
         List<Get> gets = new ArrayList<>();
         try {
@@ -418,19 +419,7 @@ public class HBaseUtil {
                     }
             );
             Result[] results = table.get(gets);
-            for(Result result : results){
-                Cell[] cells = result.rawCells();
-                for(Cell cell : cells){
-                    //得到 rowkey
-                    System.out.println("行键:" + Bytes.toString(CellUtil.cloneRow(cell)));
-                    //得到列族
-                    System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
-                    System.out.println("列:" + Bytes.toString(CellUtil.cloneQualifier(cell)));
-                    System.out.println("值:" + Bytes.toString(CellUtil.cloneValue(cell)));
-
-                    //TODO 结果封装
-                }
-            }
+            rs = getResult(results);
         } catch (Exception e) {
             e.printStackTrace();
         }finally {
@@ -442,14 +431,15 @@ public class HBaseUtil {
                 }
             }
         }
+        return rs ;
     }
 
     /**
      * scan全表数据
      * @param tableName 表名
      */
-    public List<Map<String, Map<String, String>>> getResultScann(String tableName) {
-        List<Map<String, Map<String, String>>> results = Lists.newArrayList();
+    public static Map<String,Map<String,String>> getResultScann(String tableName) {
+        Map<String,Map<String,String>> rs = Maps.newLinkedHashMap();
         Table table = null;
         ResultScanner resultScanner = null;
         try{
@@ -459,19 +449,7 @@ public class HBaseUtil {
             Scan scan = new Scan();
             //使用 table 得到 resultcanner 实现类的对象
             resultScanner = table.getScanner(scan);
-            for(Result result : resultScanner){
-                Cell[] cells = result.rawCells();
-                for(Cell cell : cells){
-                    //得到 rowkey
-                    System.out.println("行键:" + Bytes.toString(CellUtil.cloneRow(cell)));
-                    //得到列族
-                    System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
-                    System.out.println("列:" + Bytes.toString(CellUtil.cloneQualifier(cell)));
-                    System.out.println("值:" + Bytes.toString(CellUtil.cloneValue(cell)));
-
-                     //TODO 结果封装
-                }
-            }
+            rs = getResult(resultScanner);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -486,7 +464,7 @@ public class HBaseUtil {
                 resultScanner.close();
             }
         }
-        return results;
+        return rs;
     }
 
     /**
@@ -494,10 +472,10 @@ public class HBaseUtil {
      * @param tableName 表名
      * @param rowPrefix row key 开头的前缀
      */
-    public List<String> getValueByStartStopRowKey(String tableName, String rowPrefix ) {
+    public static Map<String,Map<String,String>> getValueByStartStopRowKey(String tableName, String rowPrefix ) {
         Table table = null;
         ResultScanner resultScanner = null;
-        List<String> rs = new ArrayList<>();
+        Map<String,Map<String,String>> rs = Maps.newLinkedHashMap();
         try {
             table = con.getTable(TableName.valueOf(tableName));
             //对表进行扫描,假设一个表填充了具有键“row1”，“row2”，“row3”的行，然后另一组是具有键“abc1”，“abc2”和“abc3”的行
@@ -505,23 +483,7 @@ public class HBaseUtil {
             //返回以“row”开头的行 ,  rowPrefix = "row"
             scan.setRowPrefixFilter(Bytes.toBytes(rowPrefix));
             resultScanner = table.getScanner(scan);
-            resultScanner.forEach(
-                    result -> {
-                        List<Cell> cells = result.listCells();
-                        cells.forEach(
-                                cell -> {
-                                    //得到 rowkey
-                                    System.out.println("行键:" + Bytes.toString(CellUtil.cloneRow(cell)));
-                                    //得到列族
-                                    System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
-                                    System.out.println("列:" + Bytes.toString(CellUtil.cloneQualifier(cell)));
-                                    System.out.println("值:" + Bytes.toString(CellUtil.cloneValue(cell)));
-
-                                    //TODO 结果封装
-                                }
-                        );
-                    }
-            );
+            rs = getResult(resultScanner);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -537,5 +499,68 @@ public class HBaseUtil {
             }
         }
         return rs;
+    }
+
+    /**
+     * 获取结果集
+     * TODO 忽略列族
+     */
+    private static Map<String,Map<String,String>> getResult(Result[] results){
+        List<Result> list = Arrays.asList(results);
+        Map<String,Map<String,String>> rowMap = Maps.newLinkedHashMap();
+        list.forEach(
+                result -> {
+                    List<Cell> cells = result.listCells();
+                    Map<String,String> kvMap = Maps.newLinkedHashMap();
+                    cells.forEach(
+                            cell -> {
+                                //得到 rowkey
+                                System.out.println("行键:" + Bytes.toString(CellUtil.cloneRow(cell)));
+                                //得到列族
+                                System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
+
+                                String k = Bytes.toString(CellUtil.cloneQualifier(cell));
+                                String v = Bytes.toString(CellUtil.cloneValue(cell));
+                                System.out.println("列:" + k);
+                                System.out.println("值:" + v);
+
+                                kvMap.put(k,v);
+                            }
+                    );
+                    rowMap.put(Bytes.toString(result.getRow()),kvMap);
+                }
+        );
+        return rowMap;
+    }
+
+    /**
+     * 获取结果集
+     * TODO 忽略列族
+     */
+    private static Map<String,Map<String,String>> getResult( ResultScanner resultScanner){
+        Map<String,Map<String,String>> rowMap = Maps.newLinkedHashMap();
+        resultScanner.forEach(
+                result -> {
+                    List<Cell> cells = result.listCells();
+                    Map<String,String> kvMap = Maps.newLinkedHashMap();
+                    cells.forEach(
+                            cell -> {
+                                //得到 rowkey
+                                System.out.println("行键:" + Bytes.toString(CellUtil.cloneRow(cell)));
+                                //得到列族
+                                System.out.println("列族" + Bytes.toString(CellUtil.cloneFamily(cell)));
+
+                                String k = Bytes.toString(CellUtil.cloneQualifier(cell));
+                                String v = Bytes.toString(CellUtil.cloneValue(cell));
+                                System.out.println("列:" + k);
+                                System.out.println("值:" + v);
+
+                                kvMap.put(k,v);
+                            }
+                    );
+                    rowMap.put(Bytes.toString(result.getRow()),kvMap);
+                }
+        );
+        return rowMap;
     }
 }
