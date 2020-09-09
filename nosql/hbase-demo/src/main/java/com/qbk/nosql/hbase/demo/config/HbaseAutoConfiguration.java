@@ -4,6 +4,7 @@ import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
 import org.apache.hadoop.hbase.util.Threads;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,7 +21,8 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 public class HbaseAutoConfiguration {
-    
+
+    @Autowired
     private HbaseProperties hbaseProperties;
 
     /**
