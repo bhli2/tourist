@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>elasticsearch-demo</module>
+		<module>hbase-demo</module>
 	</modules>
 
 </project>
