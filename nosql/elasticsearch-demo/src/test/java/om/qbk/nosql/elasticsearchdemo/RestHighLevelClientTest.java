@@ -479,9 +479,9 @@ public class RestHighLevelClientTest {
      */
     @Test
     public void testRangeQuery() throws IOException {
-
-        LocalDateTime localDateTime = LocalDateTime.now();
-        System.out.println(localDateTime);
+        int size = 1500;
+        LocalDateTime startTime = LocalDateTime.now();
+        System.out.println(startTime);
 
         List<Map<String, Object>> list = new ArrayList<>();
 
@@ -503,7 +503,7 @@ public class RestHighLevelClientTest {
 
         searchSourceBuilder.query(queryBuilder);
 
-        searchSourceBuilder.from(0).size(20);
+        searchSourceBuilder.from(0).size(size);
 
         searchSourceBuilder.timeout(TimeValue.timeValueSeconds(360));
 
@@ -516,9 +516,9 @@ public class RestHighLevelClientTest {
             list.add(hit.getSourceAsMap());
         }
 
-        System.out.println(list.size());
-        LocalDateTime end = LocalDateTime.now();
-        System.out.println(end);
+        LocalDateTime endTime = LocalDateTime.now();
+        Duration result = Duration.between(startTime, endTime);
+        System.out.println("size:" + size + ",耗时:" + result.toMillis() +",数量:" + list.size());
     }
 
     /**

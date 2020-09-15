@@ -36,14 +36,17 @@ public class ElasticSearchConfig {
         HttpHost httpHost = new HttpHost("20.1.120.29", 9200);
 
         RestClientBuilder builder = RestClient.builder(new HttpHost[]{httpHost});
+        //失败重试超时时间
+        //builder.setMaxRetryTimeoutMillis(5 * 60 * 1000);
 
         // 异步httpclient连接延时配置
         builder.setRequestConfigCallback(new RequestConfigCallback() {
             @Override
             public Builder customizeRequestConfig(Builder requestConfigBuilder) {
-                requestConfigBuilder.setConnectTimeout(1000);// 连接超时时间
-                requestConfigBuilder.setSocketTimeout(30000);// 连接超时时间
-                requestConfigBuilder.setConnectionRequestTimeout(500);// 获取连接的超时时间
+                //TODO 超时 设置 在 版本 7.x 才生效
+                requestConfigBuilder.setConnectTimeout(30000);// 连接超时时间
+                requestConfigBuilder.setSocketTimeout(300 * 1000);//更改客户端的超时限制默认30秒现在改为5分钟
+                requestConfigBuilder.setConnectionRequestTimeout(30000);// 获取连接的超时时间
                 return requestConfigBuilder;
             }
         });
@@ -57,6 +60,7 @@ public class ElasticSearchConfig {
                 return httpClientBuilder;
             }
         });
+
         return new RestHighLevelClient(builder);
     }
 }
