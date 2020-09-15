@@ -12,12 +12,13 @@ import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.*;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -29,6 +30,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -469,5 +472,183 @@ public class RestHighLevelClientTest {
         SearchHit[] searchHits = hits.getHits();
         // 打印结果集
         printResult(searchHits);
+    }
+
+    /**
+     * 范围 查询 分页
+     */
+    @Test
+    public void testRangeQuery() throws IOException {
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        SearchRequest searchRequest = new SearchRequest("es_fwfblog_09");
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        QueryBuilder queryBuilder =
+                //以请求开始时间作为查询字段，进行范围查询
+                QueryBuilders.rangeQuery("startTime.keyword")
+                        //从XXX时间开始
+                        .from("2020-09-07 10:58:00,000")
+                        //到XXX时间结束
+                        .to("2020-09-07 10:59:00,000")
+                        //包含上界
+                        .includeLower(true)
+                        //包含下界
+                        .includeUpper(true);
+
+        searchSourceBuilder.query(queryBuilder);
+
+        searchSourceBuilder.from(0).size(20);
+
+        searchSourceBuilder.timeout(TimeValue.timeValueSeconds(360));
+
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+
+        SearchHits hits = searchResponse.getHits();
+        for (SearchHit hit : hits) {
+            list.add(hit.getSourceAsMap());
+        }
+
+        System.out.println(list.size());
+        LocalDateTime end = LocalDateTime.now();
+        System.out.println(end);
+    }
+
+    /**
+     * 范围 分页 查询 所有
+     * size:200,耗时:67573,数量:1389
+     * size:100,耗时:94074,数量:1389
+     * size:200,耗时:40551,数量:1389
+     * size:200,耗时:27429,数量:1389
+     * size:200,耗时:22172,数量:1103
+     */
+    @Test
+    public void testRangeQueryAll() throws IOException {
+        List<Map<String, Object>> list = new ArrayList<>(1500);
+        LocalDateTime startTime = LocalDateTime.now();
+
+        long total;
+        int from = 0;
+        int size = 200;
+
+        SearchRequest searchRequest = new SearchRequest("es_fwfblog_09");
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        QueryBuilder queryBuilder =
+                //以请求开始时间作为查询字段，进行范围查询
+                QueryBuilders.rangeQuery("startTime.keyword")
+                        //从XXX时间开始
+                        .from("2020-09-07 10:51:00,000")
+                        //到XXX时间结束
+                        .to("2020-09-07 10:52:00,000")
+                        //包含上界
+                        .includeLower(true)
+                        //包含下界
+                        .includeUpper(true);
+        searchSourceBuilder.query(queryBuilder);
+
+        do {
+            searchSourceBuilder.from(from).size(size);
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+            SearchHits hits = searchResponse.getHits();
+            for (SearchHit hit : hits) {
+                list.add(hit.getSourceAsMap());
+            }
+            total = hits.getHits().length;
+            from = from + size;
+        } while (total == size);
+
+        LocalDateTime endTime = LocalDateTime.now();
+        Duration result = Duration.between(startTime, endTime);
+        System.out.println("size:" + size + ",耗时:" + result.toMillis() +",数量:" + list.size());
+    }
+
+    /**
+     * scroll 查詢 所有
+     * size:200,耗时:47261,数量:1389
+     * size:200,耗时:48533,数量:1389
+     * size:100,耗时:99765,数量:1389
+     * size:200,耗时:53824,数量:1103
+     */
+    @Test
+    public void testScroll() throws IOException {
+        List<Map<String, Object>> list = new ArrayList<>();
+        LocalDateTime startTime = LocalDateTime.now();
+
+        int size = 200;
+
+        // 初始化scroll
+        // 设定滚动时间间隔
+        // 这个时间并不需要长到可以处理所有的数据，仅仅需要足够长来处理前一批次的结果。每个 scroll 请求（包含 scroll 参数）设置了一个新的失效时间。
+        Scroll scroll = new Scroll(TimeValue.timeValueMinutes(1L));
+
+        // 新建索引搜索请求
+        SearchRequest searchRequest = new SearchRequest("es_fwfblog_09");
+        searchRequest.scroll(scroll);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        QueryBuilder queryBuilder =
+                //以请求开始时间作为查询字段，进行范围查询
+                QueryBuilders.rangeQuery("startTime.keyword")
+                        //从XXX时间开始
+                        .from("2020-09-07 10:51:00,000")
+                        //到XXX时间结束
+                        .to("2020-09-07 10:52:00,000")
+                        //包含上界
+                        .includeLower(true)
+                        //包含下界
+                        .includeUpper(true);
+
+        searchSourceBuilder.query(queryBuilder);
+
+        searchSourceBuilder.size(size);
+
+        searchSourceBuilder.timeout(TimeValue.timeValueSeconds(360));
+
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest);
+
+        SearchHit[] searchHits = searchResponse.getHits().getHits();
+        for (SearchHit hit : searchHits) {
+            list.add(hit.getSourceAsMap());
+        }
+
+        //遍历搜索命中的数据，直到没有数据
+        String scrollId = searchResponse.getScrollId();
+
+        while ( searchHits.length > 0){
+            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+
+            scrollRequest.scroll(scroll);
+
+            searchResponse = restHighLevelClient.searchScroll(scrollRequest);
+
+            scrollId = searchResponse.getScrollId();
+
+            searchHits = searchResponse.getHits().getHits();
+            for (SearchHit hit : searchHits) {
+                list.add(hit.getSourceAsMap());
+            }
+        }
+        //清除滚屏
+        ClearScrollRequest clearScrollRequest = new ClearScrollRequest();
+        //也可以选择setScrollIds()将多个scrollId一起使用
+        clearScrollRequest.addScrollId(scrollId);
+        ClearScrollResponse clearScrollResponse = restHighLevelClient.clearScroll(clearScrollRequest);
+        boolean succeeded = clearScrollResponse.isSucceeded();
+        System.out.println("succeeded:" + succeeded);
+
+        LocalDateTime endTime = LocalDateTime.now();
+        Duration result = Duration.between(startTime, endTime);
+        System.out.println("size:" + size + ",耗时:" + result.toMillis() +",数量:" + list.size());
     }
 }

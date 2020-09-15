@@ -33,7 +33,7 @@ public class ElasticSearchConfig {
     @Bean(name = "restHighLevelClient")
     public RestHighLevelClient restHighLevelClient() {
 
-        HttpHost httpHost = new HttpHost("172.31.54.234", 9200);
+        HttpHost httpHost = new HttpHost("20.1.120.29", 9200);
 
         RestClientBuilder builder = RestClient.builder(new HttpHost[]{httpHost});
 
