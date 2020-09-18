@@ -87,4 +87,11 @@
     SELECT * FROM tab_user WHERE user_name = #{userName,jdbcType=VARCHAR}
   </select>
 
+  <update id="updateBatch">
+    <foreach collection="list" item="user" separator=";">
+       update tab_user set user_name = #{user.userName}
+      where user_id = #{user.userId}
+    </foreach>
+  </update>
+
 </mapper>

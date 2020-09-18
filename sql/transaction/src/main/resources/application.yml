@@ -4,7 +4,8 @@ spring:
   application:
     name: sql-transaction
   datasource:
-    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+    #allowMultiQueries=true     1、可以在sql语句后携带分号，实现多语句执行  2、可以执行批处理，同时发出多个SQL语句
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

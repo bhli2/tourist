@@ -3,6 +3,8 @@ package com.qbk.sql.transaction.mapper;
 import com.qbk.sql.transaction.domain.TabUser;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
 * Created by Mybatis Generator 2020/04/25
 */
@@ -20,4 +22,7 @@ public interface TabUserMapper {
     int updateByPrimaryKey(TabUser record);
 
     TabUser getUserName(@Param("userName") String userName);
+
+    int updateBatch(@Param("list") List<TabUser> list );
+
 }
