@@ -47,6 +47,7 @@
 		<module>picture</module>
 		<module>sql</module>
 		<module>timer</module>
+		<module>timer-job</module>
 		<module>aliyun-sdk</module>
 		<module>data</module>
 		<module>jvmtest</module>
