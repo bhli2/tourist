@@ -6,9 +6,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * ScheduledExecutorService
- *
+ * <p>
  * 关于定时线程池，好多人认为设置好频率（比如1Min），它会按照这个间隔按部就班的工作。但是，如果其中一次调度任务卡住的话，不仅这次调度失败，而且整个线程池也会停在这次调度上。
- *
  */
 public class ScheduledThreadPoolDemo {
 
@@ -42,6 +41,7 @@ public class ScheduledThreadPoolDemo {
      * 线程数
      */
     static final int DEFAULT_THREAD_COUNT;
+
     static {
         DEFAULT_THREAD_COUNT = Runtime.getRuntime().availableProcessors() > 1 ? Runtime.getRuntime().availableProcessors() / 2 : 1;
     }
@@ -51,8 +51,9 @@ public class ScheduledThreadPoolDemo {
      */
     static ScheduledExecutorService scheduled =
             Executors.newScheduledThreadPool(
-                    5,
-                    new MyScheduledThreadFactory("qbk"));
+                    DEFAULT_THREAD_COUNT,
+                    new MyScheduledThreadFactory("qbk")
+            );
 
 
     public static void main(String[] args) {
@@ -85,7 +86,7 @@ public class ScheduledThreadPoolDemo {
      * schedule
      * 只执行一次  的定时任务
      */
-    private static void schedule(){
+    private static void schedule() {
         for (int i = 0; i < 3; i++) {
             ScheduledFuture<String> future = scheduled.schedule(
                     () -> {
@@ -114,16 +115,16 @@ public class ScheduledThreadPoolDemo {
 
     /**
      * scheduleAtFixedRate  周期性定时任务
-     *
+     * <p>
      * command：执行线程
      * initialDelay：初始化延时
      * period：两次开始执行最小间隔时间
      * unit：计时单位
      */
-    private static void scheduleAtFixedRate(){
+    private static void scheduleAtFixedRate() {
         //如果 任务耗时大于 执行间隔。 执行间隔 变成 任务耗时
         scheduled.scheduleAtFixedRate(
-                ()->{
+                () -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
                     } catch (InterruptedException e) {
@@ -139,16 +140,16 @@ public class ScheduledThreadPoolDemo {
 
     /**
      * scheduleWithFixedDelay  周期性定时任务
-     *
+     * <p>
      * command：执行线程
      * initialDelay：初始化延时
      * period：前一次执行结束到下一次执行开始的间隔时间（间隔执行延迟时间）
      * unit：计时单位
      */
-    private static void scheduleWithFixedDelay(){
+    private static void scheduleWithFixedDelay() {
         //执行间隔 = 执行间隔 + 任务耗时
         scheduled.scheduleWithFixedDelay(
-                ()->{
+                () -> {
                     try {
                         TimeUnit.SECONDS.sleep(5);
                     } catch (InterruptedException e) {
