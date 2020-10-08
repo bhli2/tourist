@@ -27,6 +27,7 @@
 		<module>test</module>
 		<module>test4</module>
 		<module>spring-routing-data-source</module>
+		<module>spring-demo</module>
 		<module>tk-mybatis</module>
 		<module>configuration-properties</module>
 		<module>wiremock</module>
