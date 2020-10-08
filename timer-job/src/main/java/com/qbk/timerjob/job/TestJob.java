@@ -8,6 +8,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 定时器堆积: 同一个周期任务，如果任务执行时间 大于 执行频率 。会造成 下一次任务执行的时间延后，导致执行频率变化。
+ * 已知存在问题的定时器： ScheduledExecutorService 、 @Scheduled 、 xxl-job
+ *
  * 测试 定时器 堆积
  * 如果 定时器 执行频率 2s ,但是任务耗时 5s ,为了不影响 执行频率 , 在执行器内部 使用线程池 异步执行任务
  * 问题: 如果一直执行下去 会不会 把线程池 用满
