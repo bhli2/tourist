@@ -36,6 +36,19 @@ public class HbaseAutoConfiguration {
         for (String key : keySet) {
             configuration.set(key, config.get(key));
         }
+        // 更改大小限制 , 默认10MB , 解决 KeyValue size too large
+        configuration.set("hbase.client.keyvalue.maxsize","20971520");
+
+        //失败重试间隔计算方式:
+        //public static int RETRY_BACKOFF[] = { 1, 2, 3, 5, 10, 20, 40, 100, 100, 100, 100, 200, 200 };
+        // long normalPause = pause * HConstants.RETRY_BACKOFF[ntries];
+        // long jitter = (long)(normalPause * RANDOM.nextFloat() * 0.01f);
+
+        //失败重试时等待时间 默认值为100ms
+        configuration.set("hbase.client.pause","50");
+
+        //失败时重试次数,默认为31次
+        configuration.set("hbase.client.retries.number","5");
         return configuration;
     }
 
