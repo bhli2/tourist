@@ -24,6 +24,7 @@
 		<module>redis</module>
 		<module>maven</module>
 		<module>web</module>
+		<module>web-async</module>
 		<module>test</module>
 		<module>test4</module>
 		<module>spring-routing-data-source</module>
