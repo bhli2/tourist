@@ -19,6 +19,7 @@
 	<description>web-async</description>
 
 	<modules>
+		<module>long-polling</module>
 		<module>servlet-async</module>
 	</modules>
 
