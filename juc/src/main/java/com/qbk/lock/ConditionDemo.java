@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Condition
+ * Condition 线程通信
  */
 public class ConditionDemo {
 
