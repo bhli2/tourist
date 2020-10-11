@@ -9,7 +9,7 @@ public class ThreadCreate {
     public static void main(String[] args) {
 
         //1、 Thread
-        new Thread(){
+        new Thread("qbk-1"){
             @Override
             public void run() {
                 System.out.println(Thread.currentThread().getName());
@@ -22,7 +22,7 @@ public class ThreadCreate {
             public void run() {
                 System.out.println(Thread.currentThread().getName());
             }
-        }).start();
+        },"qbk-2").start();
 
         //3、 Callable + FutureTask
         Callable<String> callable = new Callable<String>() {
@@ -35,7 +35,7 @@ public class ThreadCreate {
         //class FutureTask<V> implements RunnableFuture<V>
         //interface RunnableFuture<V> extends Runnable, Future<V>
         FutureTask<String> futureTask = new FutureTask<String>(callable);
-        new Thread(futureTask).start();
+        new Thread(futureTask,"qbk-3").start();
         try {
             final String s = futureTask.get();
             System.out.println(s);
