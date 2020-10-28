@@ -20,6 +20,7 @@
 
 	<modules>
 		<module>spring-event</module>
+		<module>spring-boot-external</module>
 	</modules>
 
 </project>
