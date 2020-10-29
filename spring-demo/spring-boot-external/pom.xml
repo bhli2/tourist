@@ -14,7 +14,7 @@
 	<artifactId>spring-boot-external</artifactId>
 	<version>1.0.0</version>
 	<name>spring-boot-external</name>
-	<description>spring-boot-external</description>
+	<description>spring外部参数、jar包瘦身</description>
 
 	<dependencies>
 
