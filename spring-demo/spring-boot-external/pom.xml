@@ -47,12 +47,14 @@
 					<layout>ZIP</layout>
 					<includes>
 						<include>
+							<!-- 排除所有Jar -->
 							<groupId>nothing</groupId>
 							<artifactId>nothing</artifactId>
 						</include>
 					</includes>
 				</configuration>
 			</plugin>
+			<!--拷贝依赖到jar外面的lib目录-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
