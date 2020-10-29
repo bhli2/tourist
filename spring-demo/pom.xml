@@ -19,8 +19,9 @@
 	<description>spring-demo</description>
 
 	<modules>
-		<module>spring-event</module>
 		<module>spring-boot-external</module>
+		<module>spring-event</module>
+		<module>spring-retry</module>
 	</modules>
 
 </project>
