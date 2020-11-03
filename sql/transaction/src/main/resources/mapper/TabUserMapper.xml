@@ -94,4 +94,11 @@
     </foreach>
   </update>
 
+  <select id="forUpdate" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tab_user
+    where user_name = #{userName}  limit 1 for update
+  </select>
+
 </mapper>

@@ -61,4 +61,17 @@ public class TabUserService{
     public int updateByPrimaryKey(TabUser record){
         return tabUserMapper.updateByPrimaryKey(record);
     }
+
+    /**
+     * 测试查询加锁
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void forUpdate( String userName) {
+        System.out.println("1");
+        tabUserMapper.forUpdate(userName);
+        TabUser user = new TabUser();
+        user.setUserName("kk");
+        tabUserMapper.insertSelective(user);
+        System.out.println("2");
+    }
 }

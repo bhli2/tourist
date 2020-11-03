@@ -25,4 +25,5 @@ public interface TabUserMapper {
 
     int updateBatch(@Param("list") List<TabUser> list );
 
+    void forUpdate(@Param("userName")String userName);
 }
