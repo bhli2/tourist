@@ -24,6 +24,7 @@
 		<module>builder-pattern</module>
 		<module>composite-pattern</module>
 		<module>proxy-pattern</module>
+		<module>strategy-pattern</module>
 	</modules>
 
 </project>
