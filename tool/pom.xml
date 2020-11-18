@@ -20,6 +20,7 @@
 	<modules>
 		<module>guava-demo</module>
 		<module>caffeine-cache</module>
+		<module>guava-retrying-demo</module>
 	</modules>
 
 </project>
