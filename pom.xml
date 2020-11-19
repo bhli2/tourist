@@ -18,6 +18,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>annotation</module>
 		<module>juc</module>
 		<module>collection</module>
 		<module>string</module>
