@@ -29,6 +29,7 @@ public class TestController {
             QbkAnno annotation = clazz.getAnnotation(QbkAnno.class);
             return annotation.value();
         }
+
         return "s";
     }
 }
