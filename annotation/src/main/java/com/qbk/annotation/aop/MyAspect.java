@@ -16,7 +16,7 @@ public class MyAspect {
 
     @Around("@annotation(qbkAnno)")
     public Object arround(ProceedingJoinPoint point, QbkAnno qbkAnno)throws Throwable{
-        System.out.println(qbkAnno.value());
+        System.out.println("aop:" + qbkAnno.value());
         Object proceed = point.proceed();
         return proceed;
     }
