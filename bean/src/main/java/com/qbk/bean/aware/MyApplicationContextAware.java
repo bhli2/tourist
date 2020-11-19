@@ -35,6 +35,8 @@ public class MyApplicationContextAware implements ApplicationContextAware {
     public void init(){
 
         //结合aop查看 代理对象类型
+        //MyServiceImpl$$EnhancerBySpringCGLIB$$d38e77a7
+        //$Proxy60
         System.out.println(myService.getClass().getSimpleName());
 
         /*
@@ -43,8 +45,12 @@ public class MyApplicationContextAware implements ApplicationContextAware {
         private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
         private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
          */
-        //查看 无aop、aop-cjlb、aop-jdk 三种不同模式下的 对象类型，其中，aop-jdk 抛出转换异常
-        MyServiceImpl myService = (MyServiceImpl) context.getBean("myServiceImpl");
+
+        /*查看 无aop、aop-cjlb、aop-jdk 三种不同模式下的 对象类型，其中，aop-jdk 抛出转换异常
+          如果是使用Jdk动态代理实现Spring AOP,Spring容器的getBean方法获得的对象是不能转型成该Bean定义的Class类型
+         */
+//        MyServiceImpl myService = (MyServiceImpl) context.getBean("myServiceImpl");
+        MyService myService = (MyService) context.getBean("myServiceImpl");
 
         //结合aop查看 代理对象类型
         System.out.println(myService.getClass().getSimpleName());

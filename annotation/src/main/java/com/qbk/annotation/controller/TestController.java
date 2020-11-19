@@ -18,6 +18,10 @@ public class TestController {
     @GetMapping("/")
     public String get(){
 
+        //$Proxy64
+        //TestServiceImpl$$EnhancerBySpringCGLIB$$333fdd8b
+        System.out.println(testService.getClass().getSimpleName());
+
         testService.fun();
 
         //反射工具类
