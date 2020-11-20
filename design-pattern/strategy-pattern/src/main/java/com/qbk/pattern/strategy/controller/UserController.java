@@ -4,17 +4,36 @@ import com.qbk.pattern.strategy.service.UserService;
 import com.qbk.pattern.strategy.serviceimpl.UserQQServiceImpl;
 import com.qbk.pattern.strategy.serviceimpl.UserWechatServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;;
 import java.util.Map;
 
+/**
+ * 策略模式两种写法
+ */
 @RestController
 public class UserController {
+
+    @Bean
+    public ApplicationRunner runner(){
+        return args -> {
+            System.out.println(userServices);
+            System.out.println(userServiceMap);
+        };
+    }
+    //------------------方式一 -----------------------
+
+    @Autowired
+    private Map<Integer, UserService> userServiceMap;
+
+    @GetMapping("/get")
+    public String get(int key){
+        return userServiceMap.get(key).login();
+    }
+
+    //------------------方式二 -----------------------
 
     /**
      * Map<String, T> map ,即: 键必须是String类型, 值可以是任意类型
@@ -23,14 +42,7 @@ public class UserController {
     @Autowired
     private Map<String, UserService> userServices;
 
-    @Bean
-    public ApplicationRunner runner(){
-        return args -> {
-            System.out.println(userServices);
-        };
-    }
-
-    @GetMapping("/")
+    @GetMapping("/login")
     public String login(int key){
         String keyStr = captureName(UserQQServiceImpl.class.getSimpleName());
         if(key == 1){
@@ -44,6 +56,8 @@ public class UserController {
         cs[0]+=32;
         return String.valueOf(cs);
     }
+
+    //-----------------------------------------
 
     public static void main(String[] args) {
         String name = UserQQServiceImpl.class.getName();
