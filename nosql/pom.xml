@@ -20,6 +20,7 @@
 	<modules>
 		<module>elasticsearch-demo</module>
 		<module>hbase-demo</module>
+		<module>hbase-mybatis</module>
 	</modules>
 
 </project>
