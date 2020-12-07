@@ -48,8 +48,8 @@ public class RabbitConfig {
     @Bean
     public Queue orderTtlQueue() {
         Map<String, Object> args = new HashMap<String, Object>();
-        // 队列中设置过期
-        args.put("x-message-ttl",6000);
+        // 第一种设置ttl过期时间方式： 队列中设置过期
+//        args.put("x-message-ttl",6000);
         //到期后转发的交换机
         args.put("x-dead-letter-exchange","order.direct");
         //到期后转发的路由键

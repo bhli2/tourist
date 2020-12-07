@@ -27,7 +27,7 @@ public class CancelOrderSender {
                 new MessagePostProcessor() {
                     @Override
                     public Message postProcessMessage(Message message) throws AmqpException {
-                        //消息中设置过期 ，给消息设置延迟毫秒值
+                        //第二种设置ttl过期时间方式： 消息中设置过期 ，给消息设置延迟毫秒值
                         message.getMessageProperties().setExpiration(String.valueOf(delayTimes));
                         return message;
                     }

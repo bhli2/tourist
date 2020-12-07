@@ -12,8 +12,8 @@ public class TestController {
     private CancelOrderSender cancelOrderSender;
 
     @GetMapping
-    public String get(){
-        cancelOrderSender.sendMessage(233333L,2000);
+    public String get(long key ,long delayTimes){
+        cancelOrderSender.sendMessage(key,delayTimes);
         return "s";
     }
 
