@@ -18,7 +18,7 @@ public class RabbitProduct {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendMessage(List<Integer> list) {
+    public void sendMessage(List<Integer> list , long delayTimes) {
         //这里的消息可以是任意对象，无需额外配置，直接传即可
         log.info("===============延时队列生产消息====================");
         log.info("发送时间:{},发送内容:{}", LocalDateTime.now(), list.toString());
@@ -28,11 +28,11 @@ public class RabbitProduct {
                 list,
                 message -> {
                     //注意这里时间可以使long，而且是设置header
-                    message.getMessageProperties().setHeader("x-delay", 6000);
+                    message.getMessageProperties().setHeader("x-delay", delayTimes);
                     return message;
                 }
         );
-        log.info("{}ms后执行", 6000);
+        log.info("{}ms后执行", delayTimes);
     }
 }
 

@@ -14,8 +14,8 @@ public class TestController {
     private RabbitProduct rabbitProduct;
 
     @GetMapping
-    public String get(){
-        rabbitProduct.sendMessage(Arrays.asList(222,333));
+    public String get(long delayTimes){
+        rabbitProduct.sendMessage(Arrays.asList(222,333),delayTimes);
         return "s";
     }
 
