@@ -40,6 +40,7 @@
 		<module>dockerfile-plugin</module>-->
 		<module>orika</module>
 		<module>fastdfs</module>
+		<module>file</module>
 		<module>starter</module>
 		<module>design-pattern</module>
 		<module>easypoi-demo</module>
