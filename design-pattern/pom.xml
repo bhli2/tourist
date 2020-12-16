@@ -25,6 +25,7 @@
 		<module>composite-pattern</module>
 		<module>proxy-pattern</module>
 		<module>strategy-pattern</module>
+		<module>state-pattern</module>
 	</modules>
 
 </project>
