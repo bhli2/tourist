@@ -59,7 +59,11 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 .and()
                 .withExternal()
                 .source(States.WAITING_FOR_RECEIVE).target(States.DONE)
-                .event(Events.RECEIVE);
+                .event(Events.RECEIVE)
+                .and()
+                .withExternal()
+                .source(States.UNPAID).target(States.DONE)
+                .event(Events.CANCEL);
     }
 
     /**
@@ -87,6 +91,11 @@ public class StateMachineConfig extends EnumStateMachineConfigurerAdapter<States
                 if(transition.getSource().getId() == States.WAITING_FOR_RECEIVE
                         && transition.getTarget().getId() == States.DONE) {
                     System.out.println("用户已收货，订单完成");
+                }
+
+                if(transition.getSource().getId() == States.UNPAID
+                        && transition.getTarget().getId() == States.DONE) {
+                    System.out.println("用户取消订单，订单完成");
                 }
             }
 

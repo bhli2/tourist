@@ -20,7 +20,11 @@ public class AppCommandLineRunner implements CommandLineRunner {
         最后通过掉用 sendEvent(Events.RECEIVE) 来完成收货操作。
          */
         stateMachine.start();
-        stateMachine.sendEvent(Events.PAY);
-        stateMachine.sendEvent(Events.RECEIVE);
+        if(true){
+            stateMachine.sendEvent(Events.PAY);
+            stateMachine.sendEvent(Events.RECEIVE);
+        }else {
+            stateMachine.sendEvent(Events.CANCEL);
+        }
     }
 }

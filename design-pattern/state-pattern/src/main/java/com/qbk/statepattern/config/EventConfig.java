@@ -27,4 +27,8 @@ public class EventConfig {
         System.out.println("---------用户已收货，订单完成");
     }
 
+    @OnTransition(source = "UNPAID", target = "DONE")
+    public void cancel() {
+        System.out.println("---------用户取消订单，订单完成");
+    }
 }

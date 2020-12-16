@@ -8,5 +8,9 @@ public enum  Events {
     /**
      * 收货
      */
-    RECEIVE
+    RECEIVE,
+    /**
+     * 取消
+     */
+    CANCEL
 }
