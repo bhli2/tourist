@@ -5,7 +5,7 @@ import org.springframework.scheduling.config.TriggerTask;
 
 public class MyTriggerTask extends TriggerTask {
 
-    private String name;
+    private final String name;
 
     public String getName() {
         return name;

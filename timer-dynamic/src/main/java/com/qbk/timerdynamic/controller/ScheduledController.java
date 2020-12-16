@@ -14,19 +14,22 @@ import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ScheduledFuture;
 
 /**
  * 无法使用 SchedulingConfigurer 使用做动态定时器
  * 原因 无法删减ScheduledTaskRegistrar 中的scheduledTasks列表
+ *
+ * 需要自己管理 ScheduledFuture 列表
  */
 @RestController
 public class ScheduledController {
 
     @Autowired
     private TaskDemo2 taskDemo2;
+
+    private final Map<String,ScheduledFuture> futures = new HashMap<>();
 
     @GetMapping("/cancel")
     public String cancel(){
@@ -36,6 +39,13 @@ public class ScheduledController {
                 scheduledTask.cancel();
             }
         }
+        futures.forEach(
+                (name , future) -> {
+                    if(name.equals(taskDemo2.getTaskName())){
+                        future.cancel(true);
+                    }
+                }
+        );
         return "s";
     }
 
@@ -51,7 +61,13 @@ public class ScheduledController {
             }
         };
         MyTriggerTask triggerTask = new MyTriggerTask(task,trigger,TaskDemo2.NAME);
-        taskDemo2.getTaskRegistrar().scheduleTriggerTask(triggerTask);
+
+
+        TaskScheduler scheduler = taskDemo2.getTaskRegistrar().getScheduler();
+        ScheduledFuture schedule = scheduler.schedule(task, trigger);
+        futures.put(taskDemo2.getTaskName(),schedule);
+
+//        taskDemo2.getTaskRegistrar().scheduleTriggerTask(triggerTask);
 //        taskDemo2.getTaskRegistrar().afterPropertiesSet();
         return "s";
     }
