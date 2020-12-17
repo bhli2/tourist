@@ -45,6 +45,7 @@
 		<module>design-pattern</module>
 		<module>easypoi-demo</module>
 		<module>easyexcel-demo</module>
+		<module>enum-demo</module>
 		<module>mq</module>
 		<module>tool</module>
 		<module>bean</module>
