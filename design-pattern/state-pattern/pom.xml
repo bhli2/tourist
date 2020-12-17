@@ -15,6 +15,7 @@
 	<version>1.0.0</version>
 	<name>state-pattern</name>
 	<description>状态模式</description>
+	<packaging>pom</packaging>
 
 	<modules>
 		<module>spring-statemachine-simple</module>
