@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>spring-statemachine-simple</module>
+		<module>spring-statemachine-multi</module>
 	</modules>
 
 </project>

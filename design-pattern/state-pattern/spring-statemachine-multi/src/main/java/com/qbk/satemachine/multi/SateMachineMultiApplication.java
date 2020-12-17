@@ -1,4 +1,4 @@
-package com.qbk.statepattern;
+package com.qbk.satemachine.multi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,11 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 状态机
  *
- * spring-statemachine框架的简单使用
+ * spring-statemachine 多个状态机共存
  */
 @SpringBootApplication
-public class StatePatternApplication {
+public class SateMachineMultiApplication {
     public static void main(String[] args) {
-        SpringApplication.run(StatePatternApplication.class,args);
+        SpringApplication.run(SateMachineMultiApplication.class,args);
     }
 }
