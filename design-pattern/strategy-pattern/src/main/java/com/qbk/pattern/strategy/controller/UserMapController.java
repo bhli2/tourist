@@ -11,23 +11,24 @@ import java.util.Map;
 
 /**
  * 策略模式第三种写法
+ * 构造器注入 + map
  */
 @RestController
 public class UserMapController {
 
-    private final Map<Integer, UserService> userServiceMap;
+    private final Map<Integer, UserService> userServiceMaps;
 
     private final UserQQServiceImpl userQQService;
 
     public UserMapController(UserQQServiceImpl userQQService , UserWechatServiceImpl userWechatService) {
         this.userQQService = userQQService;
-        userServiceMap = new HashMap<>();
-        userServiceMap.put(1,userQQService);
-        userServiceMap.put(2,userWechatService);
+        userServiceMaps = new HashMap<>();
+        userServiceMaps.put(1,userQQService);
+        userServiceMaps.put(2,userWechatService);
     }
 
     @GetMapping("/mapget")
     public String mapget(int key){
-        return userServiceMap.getOrDefault(key,userQQService).login();
+        return userServiceMaps.getOrDefault(key,userQQService).login();
     }
 }

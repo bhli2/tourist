@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * 策略模式两种写法
+ * set注入 map
  */
 @RestController
 public class UserController {
