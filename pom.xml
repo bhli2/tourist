@@ -46,6 +46,7 @@
 		<module>easypoi-demo</module>
 		<module>easyexcel-demo</module>
 		<module>enum-demo</module>
+		<module>exception-demo</module>
 		<module>mq</module>
 		<module>tool</module>
 		<module>bean</module>
