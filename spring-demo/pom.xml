@@ -22,6 +22,7 @@
 		<module>spring-boot-external</module>
 		<module>spring-event</module>
 		<module>spring-retry</module>
+		<module>springboot-serialize</module>
 	</modules>
 
 </project>
