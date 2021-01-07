@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>annotation</module>
+		<module>api-doc</module>
 		<module>juc</module>
 		<module>collection</module>
 		<module>string</module>
