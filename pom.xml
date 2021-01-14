@@ -21,6 +21,7 @@
 		<module>annotation</module>
 		<module>api-doc</module>
 		<module>juc</module>
+		<module>cipher</module>
 		<module>collection</module>
 		<module>string</module>
 		<module>redis</module>
