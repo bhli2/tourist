@@ -19,6 +19,7 @@
 
 	<modules>
 		<module>java-cipher</module>
+		<module>java-certificate</module>
 	</modules>
 
 </project>
