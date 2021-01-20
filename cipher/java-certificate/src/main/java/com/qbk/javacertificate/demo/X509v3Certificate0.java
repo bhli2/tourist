@@ -15,6 +15,7 @@ import java.util.Date;
 
 /**
  * 生成cer证书文件
+ * 方法已过期
  */
 public class X509v3Certificate0 {
 

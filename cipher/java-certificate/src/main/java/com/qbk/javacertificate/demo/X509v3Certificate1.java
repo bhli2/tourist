@@ -1,8 +1,9 @@
 package com.qbk.javacertificate.demo;
 
+import org.bouncycastle.asn1.ASN1ObjectIdentifier;
+import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.x500.X500Name;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.*;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
@@ -17,37 +18,41 @@ import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.PKCS10CertificationRequestBuilder;
 import org.bouncycastle.pkcs.jcajce.JcaPKCS10CertificationRequestBuilder;
 import org.bouncycastle.util.encoders.Base64;
+import sun.security.util.DerInputStream;
 import sun.security.util.ObjectIdentifier;
 import sun.security.x509.CertificateExtensions;
 import sun.security.x509.ExtendedKeyUsageExtension;
 import sun.security.x509.KeyUsageExtension;
 
+import javax.crypto.Cipher;
 import java.io.FileOutputStream;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Vector;
+import java.util.*;
 
 /**
  * 生成证书 cer
+ *
+ * 带扩展信息
  */
 public class X509v3Certificate1 {
 
-    public static void main(String[] args) throws Exception {
-        makeUserSelfSignCert();
-    }
+    // 签发者DN
+    public static String issuerDN = "C=CN,ST=BJ,L=BJ,O=BEIJING,OU=BEIJING,CN=BEIJING";
 
     static{
         try{
+            //bc方法添加都环境变量
             Security.addProvider(new BouncyCastleProvider());
         }catch(Exception e){
             e.printStackTrace();
         }
     }
 
-    // 签发者DN
-    public static String issuerDN = "C=CN,ST=BJ,L=BJ,O=BEIJING,OU=BEIJING,CN=BEIJING";
+    public static void main(String[] args) throws Exception {
+        makeUserSelfSignCert();
+    }
 
     public static void makeUserSelfSignCert() throws Exception {
 
@@ -103,6 +108,13 @@ public class X509v3Certificate1 {
                         pkcs10CertificationRequest.getSubject(),
                         pkcs10CertificationRequest.getSubjectPublicKeyInfo());
 
+        //添加扩展信息
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.ENCRYPT_MODE, privKey);
+        byte[] plaintext = cipher.doFinal("这是一条扩展信息".getBytes());
+        byte[] encode = Base64.encode(plaintext);
+        certBuilder.addExtension(new ASN1ObjectIdentifier("1.2.3.4"), true, encode);
+
         X509CertificateHolder holder = certBuilder.build(signer);
 
         java.security.cert.X509Certificate certificate = new JcaX509CertificateConverter()
@@ -114,4 +126,5 @@ public class X509v3Certificate1 {
         fos.flush();
         fos.close();
     }
+
 }
