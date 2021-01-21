@@ -3,10 +3,13 @@ package com.qbk.javacertificate.demo;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -23,8 +26,13 @@ public class JavaCertificate {
 
         String privateKey = getKey();
 
+        System.out.println("公钥对象:");
+        PublicKey publicKey = getPublicKey(pblicKey);
+        System.out.println(publicKey);
+
         System.out.println();
         showCertInfo();
+
     }
 
     /**
@@ -80,6 +88,14 @@ public class JavaCertificate {
             ex.printStackTrace();
         }
         return "";
+    }
+
+    /**
+     * 获取公钥对象
+     * @param publicKey 公钥串
+     */
+    static PublicKey getPublicKey(String publicKey) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        return KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey.getBytes(StandardCharsets.UTF_8))));
     }
 
     //************************************* 解析证书 ***************************************************************
