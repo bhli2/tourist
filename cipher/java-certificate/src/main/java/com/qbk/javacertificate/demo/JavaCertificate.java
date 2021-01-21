@@ -1,6 +1,5 @@
 package com.qbk.javacertificate.demo;
 
-import javax.crypto.Cipher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -8,8 +7,6 @@ import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -25,12 +22,6 @@ public class JavaCertificate {
         String pblicKey = getCerKey();
 
         String privateKey = getKey();
-
-        String sign = sign("quboka test", privateKey);
-        System.out.println("sign : " + sign);
-
-        boolean verify = verify("quboka test", pblicKey, sign);
-        System.out.println(verify);
 
         System.out.println();
         showCertInfo();
@@ -72,7 +63,6 @@ public class JavaCertificate {
 
     /**
      * 获取证书中的公钥
-     * @return
      */
     public static String getCerKey() {
         try{
@@ -91,76 +81,6 @@ public class JavaCertificate {
         }
         return "";
     }
-
-    //************************************* 加签 ***************************************************************
-
-    public static final String KEY_ALGORITHM = "RSA";
-
-    /**
-     * 校验数字签名
-     *
-     * @param content 数据
-     * @param privateKey 私钥
-     * @throws Exception
-     */
-    public static String sign(String content, String privateKey) throws Exception {
-        byte[] data=content.getBytes("utf-8");
-
-        // 解密由base64编码的私钥
-        byte[] keyBytes = Base64.getDecoder().decode(privateKey);
-
-        // 构造PKCS8EncodedKeySpec对象
-        PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(keyBytes);
-
-        // KEY_ALGORITHM 指定的加密算法
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-
-        // 取私钥匙对象
-        PrivateKey priKey = keyFactory.generatePrivate(pkcs8KeySpec);
-
-        // 用私钥对信息生成数字签名
-        Signature signature = Signature.getInstance("SHA384WithRSA");
-        signature.initSign(priKey);
-        signature.update(data);
-
-        return Base64.getEncoder().encodeToString(signature.sign());
-    }
-
-
-
-    /**
-     * 校验数字签名
-     *
-     * @param content 数据
-     * @param publicKey 公钥
-     * @param sign 数字签名
-     * @return 校验成功返回true 失败返回false
-     * @throws Exception
-     *
-     */
-    public static boolean verify(String content, String publicKey, String sign) throws Exception {
-        byte[] data=content.getBytes("utf-8");
-
-        // 解密由base64编码的公钥
-        byte[] keyBytes = Base64.getDecoder().decode(publicKey);
-
-        // 构造X509EncodedKeySpec对象
-        X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-
-        // KEY_ALGORITHM 指定的加密算法
-        KeyFactory keyFactory = KeyFactory.getInstance(KEY_ALGORITHM);
-
-        // 取公钥匙对象
-        PublicKey pubKey = keyFactory.generatePublic(keySpec);
-
-        Signature signature = Signature.getInstance("SHA384WithRSA");
-        signature.initVerify(pubKey);
-        signature.update(data);
-
-        // 验证签名是否正常
-        return signature.verify(Base64.getDecoder().decode(sign));
-    }
-
 
     //************************************* 解析证书 ***************************************************************
 

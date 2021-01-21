@@ -7,6 +7,9 @@ import java.security.Key;
 import java.security.SecureRandom;
 import java.util.Base64;
 
+/**
+ * 对称加密
+ */
 public class AESUtil {
 
     /**
